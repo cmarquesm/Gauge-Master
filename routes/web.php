@@ -17,4 +17,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Rutas para administración
+Route::middleware((['auth', 'role:admin']))->prefix('admin')->name('admin.')->group(function (){
+    Route::get('dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
+    Route::resource('users', App\Http\Controllers\Admin\UserController::class)->except(['show', 'create', 'store']);
+    Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
+});
 require __DIR__.'/auth.php';

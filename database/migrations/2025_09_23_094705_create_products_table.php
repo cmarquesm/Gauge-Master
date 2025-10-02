@@ -15,11 +15,11 @@ return new class extends Migration
         $table->id();
         $table->string('brand');
         $table->string('model');
-        $table->string('gauge'); // Ej: 10–46
+        $table->string('gauge'); 
         $table->text('description')->nullable();
         $table->decimal('price', 8, 2);
         $table->integer('stock')->default(0);
-        $table->string('image')->nullable(); // ruta o URL
+        $table->string('image')->nullable();
         $table->timestamps();
     });
 }
