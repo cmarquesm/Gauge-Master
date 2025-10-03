@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        // Placeholder para listado de productos
-        return view('admin.products.index');
+        $products = Product::paginate(10); // listado con paginación
+        return view('admin.products.index', compact('products'));
     }
 
     public function create()
@@ -20,24 +21,46 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // Aquí irá la lógica de guardar producto
-        return redirect()->route('admin.products.index')->with('success', 'Producto creado.');
+        $request->validate([
+            'brand'       => 'required|string|max:255',
+            'model'       => 'required|string|max:255',
+            'gauge'       => 'nullable|string|max:50',
+            'description' => 'nullable|string',
+            'price'       => 'required|numeric|min:0',
+            'stock'       => 'required|integer|min:0',
+            'image'       => 'nullable|string|max:255', // si es path a imagen
+        ]);
+
+        Product::create($request->all());
+
+        return redirect()->route('admin.products.index')->with('success', 'Producto creado correctamente.');
     }
 
-    public function edit($id)
+    public function edit(Product $product)
     {
-        return view('admin.products.edit');
+        return view('admin.products.edit', compact('product'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
-        // Aquí irá la lógica de actualizar producto
-        return redirect()->route('admin.products.index')->with('success', 'Producto actualizado.');
+        $request->validate([
+            'brand'       => 'required|string|max:255',
+            'model'       => 'required|string|max:255',
+            'gauge'       => 'nullable|string|max:50',
+            'description' => 'nullable|string',
+            'price'       => 'required|numeric|min:0',
+            'stock'       => 'required|integer|min:0',
+            'image'       => 'nullable|string|max:255',
+        ]);
+
+        $product->update($request->all());
+
+        return redirect()->route('admin.products.index')->with('success', 'Producto actualizado correctamente.');
     }
 
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        // Aquí irá la lógica de eliminar producto
-        return redirect()->route('admin.products.index')->with('success', 'Producto eliminado.');
+        $product->delete();
+        return redirect()->route('admin.products.index')->with('success', 'Producto eliminado correctamente.');
     }
 }
