@@ -17,7 +17,7 @@
       <nav class="px-4 py-2 space-y-2">
         <a href="{{ url('/admin/dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-100">Panel de control</a>
         <a href="{{ url('/admin/products') }}" class="block px-4 py-2 rounded hover:bg-gray-100">Productos</a>
-        <a href="{{ url('/admin/customers') }}" class="block px-4 py-2 rounded hover:bg-gray-100">Usuarios</a>
+        <a href="{{ url('/admin/users') }}" class="block px-4 py-2 rounded hover:bg-gray-100">Usuarios</a>
         <a href="{{ url('/admin/orders') }}" class="block px-4 py-2 rounded hover:bg-gray-100">Pedidos</a>
       </nav>
 

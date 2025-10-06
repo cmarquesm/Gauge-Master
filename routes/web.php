@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', fn () => view('welcome'));
 
@@ -18,11 +20,12 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
-    Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
 
     // Usuarios y Productos
     Route::resource('users', UserController::class)->except(['show']);   
-    Route::resource('products', ProductController::class);     
+    Route::resource('products', ProductController::class); 
+    Route::resource('orders', OrderController::class);    
 });          
 
 require __DIR__.'/auth.php';
