@@ -16,9 +16,8 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $user = $request->user()->load('profile');
+        return view('profile.edit', compact('user'));
     }
 
     /**
@@ -26,13 +25,28 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $validatedUser = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $request->user()->id,
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $validatedProfile = $request->validate([
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'avatar' => 'nullable|image|max:2048',
+        ]);
+
+        if ($request->hasFile('avatar')) {
+            $path = $request->file('avatar')->store('avatars', 'public');
+            $validatedProfile['avatar'] = $path;
         }
 
-        $request->user()->save();
+
+        $user = $request->user();
+        $user->update($validatedUser);
+
+        $profile = $user->profile ?? $user->profile()->create([]);
+        $profile->update($validatedProfile);
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }

@@ -7,11 +7,12 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\AdminController;
 
-Route::get('/', fn () => view('welcome'));
+Route::get('/', fn() => view('main.index'))->name('main');
+Route::get('/info', fn() => view('main.info'))->name('info');
 
-Route::get('/dashboard', fn () => view('dashboard'))
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::get('/tienda', fn() => view('store.index'))->name('store');
+
+Route::get('/calculadora', fn() => view('calculator.index'))->name('calculator');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -20,12 +21,12 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
     // Usuarios y Productos
-    Route::resource('users', UserController::class)->except(['show']);   
-    Route::resource('products', ProductController::class); 
-    Route::resource('orders', OrderController::class);    
-});          
+    Route::resource('users', UserController::class)->except(['show']);
+    Route::resource('products', ProductController::class);
+    Route::resource('orders', OrderController::class);
+});
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
