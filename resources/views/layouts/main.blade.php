@@ -51,6 +51,9 @@
     <footer class="bg-gray-100 text-center py-4 text-sm text-gray-500 border-t">
         &copy; {{ date('Y') }} Gauge Master
     </footer>
+    
+    @yield('scripts')
+
 </body>
 
 </html>
