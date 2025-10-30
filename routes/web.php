@@ -14,6 +14,11 @@ Route::get('/tienda', fn() => view('store.index'))->name('store');
 
 Route::get('/calculadora', fn() => view('calculator.index'))->name('calculator');
 
+Route::post('/tunings', [App\Http\Controllers\TuningController::class, 'store'])
+    ->name('tunings.store')
+    ->middleware('auth');
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

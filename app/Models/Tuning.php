@@ -13,14 +13,14 @@ class Tuning extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'instrument_type',
-        'tuning_1',
-        'tuning_2',
-        'tuning_3',
-        'tuning_4',
-        'tuning_5',
-        'tuning_6',
+        'material',
+        'notes',
+        'gauges',
+        'tensions',
+        'total_tension',
+        'description',
     ];
+
 
     // Relación: una afinación pertenece a un usuario
     public function user()

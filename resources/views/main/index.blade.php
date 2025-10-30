@@ -60,6 +60,41 @@
                 </table>
             </div>
 
+            {{-- Bloque Guardar afinación --}}
+            <div id="save-tuning" class="mt-8 border-t pt-6">
+                <h3 class="text-xl font-semibold mb-3">Guardar afinación</h3>
+
+                <form id="save-tuning-form" method="POST" action="{{ route('tunings.store') }}" class="space-y-4">
+                    @csrf
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                        <input type="text" name="name" id="tuning-name" required class="border rounded p-2 w-full"
+                            placeholder="Ej. Drop D ligera 25.5&quot;">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Material</label>
+                        <select name="material" id="material" class="border rounded p-2 w-full">
+                            <option value="nickel" selected>Níquel</option>
+                            <option value="steel">Acero inoxidable</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+                        <textarea name="description" id="tuning-description" rows="3" class="border rounded p-2 w-full"></textarea>
+                    </div>
+
+                    <input type="hidden" name="notes" id="tuning-notes">
+                    <input type="hidden" name="gauges" id="tuning-gauges">
+                    <input type="hidden" name="tensions" id="tuning-tensions">
+                    <input type="hidden" name="total_tension" id="tuning-total">
+
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Guardar afinación</button>
+                </form>
+            </div>
+
+
             <div class="flex justify-between items-center">
                 <button id="calc-btn" class="bg-blue-600 text-white px-4 py-2 rounded">Calcular</button>
                 <p class="text-gray-700"><strong>Tensión total:</strong> <span id="total-tension">0</span> lb</p>

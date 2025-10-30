@@ -150,3 +150,51 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTabla(afinaciones[presetSel.value], parseFloat(escalaInput.value), tensionSel.value);
   });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('save-tuning-form');
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // evita el reload
+
+    // recopila los datos visibles
+    const notas = Array.from(document.querySelectorAll('.nota-select')).map(s => s.value);
+    const calibres = Array.from(document.querySelectorAll('.calibre-input')).map(i => i.value);
+    const tensiones = Array.from(document.querySelectorAll('[data-tension]')).map(td => td.textContent);
+    const total = document.getElementById('total-tension').textContent;
+
+    // empaqueta el formulario en FormData
+    const data = new FormData(form);
+    data.set('notes', notas.join(','));
+    data.set('gauges', calibres.join(','));
+    data.set('tensions', tensiones.join(','));
+    data.set('total_tension', total);
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+        },
+        body: data
+      });
+
+      if (res.ok) {
+        const successMsg = document.createElement('p');
+        successMsg.textContent = 'Afinación guardada correctamente.';
+        successMsg.className = 'text-green-600 mt-3';
+        form.appendChild(successMsg);
+        setTimeout(() => successMsg.remove(), 3000);
+      } else {
+        throw new Error('Error al guardar');
+      }
+    } catch (err) {
+      const errorMsg = document.createElement('p');
+      errorMsg.textContent = 'No se pudo guardar la afinación.';
+      errorMsg.className = 'text-red-600 mt-3';
+      form.appendChild(errorMsg);
+      setTimeout(() => errorMsg.remove(), 3000);
+    }
+  });
+});
