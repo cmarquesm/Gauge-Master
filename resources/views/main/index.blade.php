@@ -60,6 +60,12 @@
                 </table>
             </div>
 
+            <div class="flex justify-between items-center">
+                <button id="calc-btn" class="bg-blue-600 text-white px-4 py-2 rounded">Calcular</button>
+                <p class="text-gray-700"><strong>Tensión total:</strong> <span id="total-tension">0</span> lb</p>
+            </div>
+
+
             {{-- Bloque Guardar afinación --}}
             <div id="save-tuning" class="mt-8 border-t pt-6">
                 <h3 class="text-xl font-semibold mb-3">Guardar afinación</h3>
@@ -93,13 +99,6 @@
                     <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Guardar afinación</button>
                 </form>
             </div>
-
-
-            <div class="flex justify-between items-center">
-                <button id="calc-btn" class="bg-blue-600 text-white px-4 py-2 rounded">Calcular</button>
-                <p class="text-gray-700"><strong>Tensión total:</strong> <span id="total-tension">0</span> lb</p>
-            </div>
-
 
         </div>
     </section>

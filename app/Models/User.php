@@ -63,4 +63,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    public function getAvatarUrlAttribute()
+{
+    if ($this->profile && $this->profile->avatar) {
+        return asset('storage/' . $this->profile->avatar);
+    }
+    return asset('images/default-avatar.png');
+}
+
 }

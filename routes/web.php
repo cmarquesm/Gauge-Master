@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PasswordController;
+
 
 Route::get('/', fn() => view('main.index'))->name('main');
 Route::get('/info', fn() => view('main.info'))->name('info');
@@ -33,5 +35,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::resource('products', ProductController::class);
     Route::resource('orders', OrderController::class);
 });
+
+
+Route::middleware('auth')->group(function () {
+    Route::put('/password', [PasswordController::class, 'update'])->name('password.update');
+});
+
 
 require __DIR__ . '/auth.php';
