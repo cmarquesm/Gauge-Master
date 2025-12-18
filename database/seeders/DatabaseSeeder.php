@@ -37,9 +37,6 @@ class DatabaseSeeder extends Seeder
         // Productos
         $this->call(ProductSeeder::class);
 
-        // Afinaciones de usuarios
-        $this->call(TuningSeeder::class);
-
         // Pedidos
         $this->call(OrderSeeder::class);
     }
