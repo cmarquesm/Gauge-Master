@@ -17,8 +17,7 @@ Route::get('/tienda', fn() => view('store.index'))->name('store');
 Route::get('/calculadora', fn() => view('calculator.index'))->name('calculator');
 
 Route::post('/tunings', [App\Http\Controllers\TuningController::class, 'store'])
-    ->name('tunings.store')
-    ->middleware('auth');
+    ->name('tunings.store');
 
 
 Route::middleware('auth')->group(function () {

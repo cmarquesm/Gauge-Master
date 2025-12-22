@@ -10,6 +10,10 @@ class TuningController extends Controller
 {
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect()->back()
+                ->with('error', 'Debes iniciar sesión para guardar una afinación.');
+        }
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'material' => 'required|string|max:50',
