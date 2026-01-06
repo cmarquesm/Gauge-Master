@@ -30,4 +30,44 @@ class TuningController extends Controller
 
         return back()->with('success', 'Afinación guardada correctamente.');
     }
+
+    public function edit(Tuning $tuning)
+    {
+        if ($tuning->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        return view('tunings.edit', compact('tuning'));
+    }
+
+    public function update(Request $request, Tuning $tuning)
+    {
+        if ($tuning->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'notes' => 'required|string',
+            'total_tension' => 'nullable|numeric',
+            'description' => 'nullable|string',
+        ]);
+
+        $tuning->update($data);
+
+        return redirect()
+            ->route('profile.edit')
+            ->with('status', 'tuning-updated');
+    }
+
+    public function destroy(Tuning $tuning)
+    {
+        if ($tuning->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $tuning->delete();
+
+        return back()->with('status', 'tuning-deleted');
+    }
 }
