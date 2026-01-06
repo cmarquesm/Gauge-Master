@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Order;
 
 class ProfileController extends Controller
 {
@@ -18,8 +19,20 @@ class ProfileController extends Controller
     {
         $user = $request->user()->load('profile');
 
-        $tunings =$request->user()->tunings()->latest()->get();
+        $tunings = $request->user()
+            ->tunings()
+            ->latest()
+            ->get();
         return view('profile.edit', compact('user', 'tunings'));
+
+        $orders = Order::with('products')
+            ->where('user_id', $request->user()->id)
+            ->latest()
+            ->paginate(10);
+        return view('profile.edit', [
+            'user' => $request->user(),
+            'orders' => $orders,
+        ]);
     }
 
     /**
