@@ -23,16 +23,13 @@ class ProfileController extends Controller
             ->tunings()
             ->latest()
             ->get();
-        return view('profile.edit', compact('user', 'tunings'));
 
         $orders = Order::with('products')
             ->where('user_id', $request->user()->id)
             ->latest()
             ->paginate(10);
-        return view('profile.edit', [
-            'user' => $request->user(),
-            'orders' => $orders,
-        ]);
+
+        return view('profile.edit', compact('user', 'tunings', 'orders'));
     }
 
     /**

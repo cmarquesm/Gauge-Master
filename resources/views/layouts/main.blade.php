@@ -10,7 +10,7 @@
 
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
 
-    <header class="bg-gray-900 text-black">
+    <header class="bg-gray-900 text-white">
         <nav class="container mx-auto flex justify-between items-center py-4 px-4">
             <h1 class="text-2xl font-bold">Gauge Master</h1>
             <ul class="flex items-center space-x-6 text-sm uppercase">
@@ -19,6 +19,9 @@
                 <li><a href="{{ route('store') }}" class="hover:text-blue-400">Tienda</a></li>
 
                 @auth
+
+                    <li><a href="{{ route('cart.show') }}" class="hover:text-blue-400">Carrito</a></li>
+
                     @if (Auth::user()->role === 'admin')
                         <li><a href="{{ route('admin.dashboard') }}" class="text-yellow-400 hover:text-yellow-300">Admin</a>
                         </li>

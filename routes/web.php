@@ -16,7 +16,7 @@ use App\Http\Controllers\ProfileOrderController;
 Route::get('/', fn() => view('main.index'))->name('main');
 Route::get('/info', fn() => view('main.info'))->name('info');
 
-Route::get('/tienda', [StoreController::class, 'index'])->name('store.index');
+Route::get('/tienda', [StoreController::class, 'index'])->name('store');
 
 
 Route::post('/tunings', [App\Http\Controllers\TuningController::class, 'store'])
