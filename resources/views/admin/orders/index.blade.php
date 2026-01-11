@@ -4,8 +4,6 @@
 <div class="container">
     <h1 class="mb-4">Pedidos</h1>
 
-    <a href="{{ route('admin.orders.create') }}" class="btn btn-primary mb-3">Nuevo Pedido</a>
-
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif

@@ -47,7 +47,7 @@
 
             <label>
                 Material:
-                <select id="material" class="border rounded p-2 w-full">
+                <select id="calc-material" class="border rounded p-2 w-full">
                     <option value="nickel" selected>Níquel</option>
                     <option value="steel">Acero inoxidable</option>
                 </select>
@@ -91,10 +91,22 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Material</label>
-                    <select name="material" id="material" class="border rounded p-2 w-full">
-                        <option value="nickel" selected>Níquel</option>
-                        <option value="steel">Acero inoxidable</option>
+                    @php
+                    $brands = \App\Models\Product::query()
+                    ->where('stock', '>', 0)
+                    ->select('brand')
+                    ->distinct()
+                    ->orderBy('brand')
+                    ->pluck('brand');
+                    @endphp
+
+                    <select name="manufacturer" id="cart-manufacturer" class="border rounded p-2 w-full" required>
+                        <option value="">Selecciona...</option>
+                        @foreach($brands as $brand)
+                        <option value="{{ $brand }}">{{ $brand }}</option>
+                        @endforeach
                     </select>
+
                 </div>
 
                 <div>
@@ -108,7 +120,52 @@
                 <input type="hidden" name="total_tension" id="tuning-total">
 
                 <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Guardar afinación</button>
+                <button type="button" id="add-to-cart-btn" class="bg-indigo-600 text-white px-4 py-2 rounded">Añadir set al carrito</button>
             </form>
+            {{-- Modal Añadir set al carrito --}}
+            <div id="add-to-cart-modal" class="fixed inset-0 hidden items-center justify-center bg-black/50 p-4">
+                <div class="bg-white w-full max-w-lg rounded-lg shadow p-6">
+                    <h3 class="text-xl font-semibold mb-4">Añadir set al carrito</h3>
+
+                    <form id="add-to-cart-form" method="POST" action="{{ route('cart.custom-set.add') }}" class="space-y-4">
+                        @csrf
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Fabricante</label>
+                            <select name="manufacturer" id="cart-manufacturer" class="border rounded p-2 w-full" required>
+                                <option value="">Selecciona...</option>
+                                <option value="Daddario">Daddario</option>
+                                <option value="Ernie Ball">Ernie Ball</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Material</label>
+                            <select name="material" id="cart-material" class="border rounded p-2 w-full" required>
+                                <option value="nickel">Níquel</option>
+                                <option value="steel">Acero inoxidable</option>
+                            </select>
+                        </div>
+
+                        <div class="flex gap-2 justify-end pt-2">
+                            <button type="button" id="add-to-cart-cancel" class="px-4 py-2 rounded border">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="px-4 py-2 rounded bg-green-600 text-white">
+                                Añadir
+                            </button>
+                        </div>
+
+                        {{-- Payload oculto --}}
+                        <input type="hidden" name="notes" id="cart-notes">
+                        <input type="hidden" name="gauges" id="cart-gauges">
+                        <input type="hidden" name="tensions" id="cart-tensions">
+                        <input type="hidden" name="total_tension" id="cart-total">
+                        <input type="hidden" name="scale" id="cart-scale">
+                    </form>
+                </div>
+            </div>
+
         </div>
 
     </div>

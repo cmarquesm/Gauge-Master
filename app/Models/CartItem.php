@@ -13,6 +13,10 @@ class CartItem extends Model
         'user_id',
         'product_id',
         'quantity',
+        'meta',
+    ];
+    protected $casts = [
+        'meta' => 'array',
     ];
 
     public function product()

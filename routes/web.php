@@ -21,7 +21,9 @@ Route::get('/tienda', [StoreController::class, 'index'])->name('store');
 
 Route::post('/tunings', [App\Http\Controllers\TuningController::class, 'store'])
     ->name('tunings.store');
-
+Route::post('/cart/custom-set', [CartController::class, 'addCustomSet'])
+    ->middleware('auth')
+    ->name('cart.custom-set.add');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -93,7 +93,6 @@ function renderTabla(afinacion, escala, nivel) {
   activarRecalculo(escala);
 }
 
-
 // --- Recalcular tensiones al cambiar nota o calibre ---
 function activarRecalculo(escala) {
   const filas = document.querySelectorAll('#string-rows tr');
@@ -114,7 +113,6 @@ function activarRecalculo(escala) {
     inp.addEventListener('input', recalcular);
   });
 }
-
 
 // --- Actualizar tensión total ---
 function actualizarTensionTotal() {
@@ -151,6 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// --- Guardar afinación (hidden inputs) ---
+// Ajuste: ahora el select del form tiene id="tuning-material" (ya no usamos id="material")
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('save-tuning-form');
   if (!form) return;
@@ -165,5 +165,43 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('tuning-gauges').value = calibres.join(',');
     document.getElementById('tuning-tensions').value = tensiones.join(',');
     document.getElementById('tuning-total').value = total;
+  });
+});
+
+// --- Modal "Añadir set al carrito" ---
+document.addEventListener('DOMContentLoaded', () => {
+  const openBtn = document.getElementById('add-to-cart-btn');
+  const modal = document.getElementById('add-to-cart-modal');
+  const cancelBtn = document.getElementById('add-to-cart-cancel');
+
+  if (!openBtn || !modal || !cancelBtn) return;
+
+  const openModal = () => {
+    const notas = Array.from(document.querySelectorAll('.nota-select')).map(s => s.value);
+    const calibres = Array.from(document.querySelectorAll('.calibre-input')).map(i => i.value);
+    const tensiones = Array.from(document.querySelectorAll('[data-tension]')).map(td => td.textContent);
+    const total = document.getElementById('total-tension')?.textContent ?? '0';
+    const scale = document.getElementById('scale')?.value ?? '';
+
+    document.getElementById('cart-notes').value = notas.join(',');
+    document.getElementById('cart-gauges').value = calibres.join(',');
+    document.getElementById('cart-tensions').value = tensiones.join(',');
+    document.getElementById('cart-total').value = total;
+    document.getElementById('cart-scale').value = scale;
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  };
+
+  const closeModal = () => {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  };
+
+  openBtn.addEventListener('click', openModal);
+  cancelBtn.addEventListener('click', closeModal);
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
   });
 });

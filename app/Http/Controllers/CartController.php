@@ -52,6 +52,91 @@ class CartController extends Controller
         return back()->with('success', 'Añadido al carrito.');
     }
 
+    public function addCustomSet(Request $request)
+    {
+        $validated = $request->validate([
+            'manufacturer'   => 'required|string|max:255',
+            'material'       => 'required|in:nickel,steel',
+            'notes'          => 'required|string',
+            'gauges'         => 'required|string',
+            'tensions'       => 'required|string',
+            'total_tension'  => 'required|numeric',
+            'scale'          => 'nullable|numeric',
+        ]);
+
+        // Parseo arrays
+        $notes = array_map('trim', explode(',', $validated['notes']));
+        $gauges = array_map('trim', explode(',', $validated['gauges']));
+        $tensions = array_map('trim', explode(',', $validated['tensions']));
+
+        if (count($notes) !== count($gauges) || count($notes) !== count($tensions)) {
+            return back()->with('error', 'Datos del set incompletos (notas/calibres/tensiones no cuadran).');
+        }
+
+        // Validar que la marca existe con stock
+        $brandHasStock = Product::query()
+            ->where('brand', $validated['manufacturer'])
+            ->where('stock', '>', 0)
+            ->exists();
+
+        if (!$brandHasStock) {
+            return back()->with('error', 'El fabricante seleccionado no tiene stock.');
+        }
+
+        $userId = $request->user()->id;
+        $missing = [];
+
+        DB::transaction(function () use ($userId, $validated, $notes, $gauges, $tensions, &$missing) {
+            // Limpia posibles restos de un intento previo reciente (opcional)
+            // CartItem::where('user_id', $userId)->whereNotNull('meta')->delete();
+
+            foreach ($gauges as $idx => $g) {
+                // gauges llega como "0.010" etc
+                $gFloat = (float) $g;
+                $g3 = number_format($gFloat, 3, '.', '');          // "0.010"
+                $gThou = (string) (int) round($gFloat * 1000);     // "10"
+                $gDb = preg_replace('/^0\./', '.', $g3); // "0.010" -> ".010"
+
+                $product = Product::query()
+                    ->where('brand', $validated['manufacturer'])
+                    ->where('stock', '>', 0)
+                    ->where(function ($q) use ($g3, $gDb) {
+                        $q->where('gauge', $gDb)   // ".010"
+                            ->orWhere('gauge', $g3); // "0.010" (por si acaso)
+                    })
+
+                    ->orderByDesc('stock')
+                    ->first();
+
+                if (!$product) {
+                    $missing[] = $g3;
+                    continue;
+                }
+
+                CartItem::create([
+                    'user_id'    => $userId,
+                    'product_id' => $product->id,
+                    'quantity'   => 1,
+                    'meta'       => [
+                        'type'             => 'custom_set_string',
+                        'note'             => $notes[$idx] ?? null,
+                        'tension'          => $tensions[$idx] ?? null,
+                        'scale'            => $validated['scale'] ?? null,
+                        'set_total_tension' => (float) $validated['total_tension'],
+                        'material'         => $validated['material'],
+                    ],
+                ]);
+            }
+
+            // Si falta alguno, abortamos la transacción para que no se añada un set incompleto
+            if (!empty($missing)) {
+                throw new \RuntimeException('Missing gauges: ' . implode(', ', $missing));
+            }
+        });
+
+        return redirect()->route('cart.show')->with('success', 'Set añadido al carrito con productos reales.');
+    }
+
 
     public function remove(Request $request)
     {
