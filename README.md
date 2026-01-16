@@ -1,7 +1,9 @@
 ## Gauge Master – Calculadora de Calibres
 
-**Gauge Master** es una aplicación web desarrollada como Proyecto Final del ciclo formativo de Desarrollo de Aplicaciones Web (DAW). La app permite calcular el calibre de las cuerdas de guitarra, bajo o guitarra barítono en función de la escala, la afinación y la tensión deseada. Está orientada a músicos y luthiers que desean un ajuste preciso y personalizado.
+**Gauge Master** es una aplicación web desarrollada como Proyecto Final del ciclo formativo de Desarrollo de Aplicaciones Web (DAW). La app permite calcular el calibre de las cuerdas de guitarra, bajo o guitarra barítono en función de la escala, la afinación y la tensión deseada. Está orientada a músicos y luthiers que desean un ajuste preciso y personalizado. 
+La aplicación está completada con una tienda integrada de cuerdas con carrito de compra.
 
+Como complemento, un ChatBot está disponible para resolver dudas y ofrecer recomendaciones.
 ---
 
 ## Tecnologías utilizadas
@@ -23,8 +25,9 @@
 - Guardado de configuraciones personalizadas (afinaciones/calibres)
 - Tienda integrada de cuerdas con carrito de compra y pasarela de pago
 - Explicación técnica de la relación entre tensión, escala y calibre
+- ChatBot para resolver dudas y ofrecer recomendaciones
 - Cookies, alertas modales y sistema de ofertas
 
 ## Autor
 
-Desarrollado por Carlos Marqués como parte del ciclo de DAW – Granada, 2025.
+Desarrollado por Carlos Marqués para el PFC como asignatura del ciclo de DAW – Granada, 2026.
