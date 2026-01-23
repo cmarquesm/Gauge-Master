@@ -42,6 +42,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/orders', [ProfileOrderController::class, 'index'])->name('profile.orders.index');
     Route::get('/profile/orders/{order}', [ProfileOrderController::class, 'show'])->name('profile.orders.show');
     
+    Route::get('/test-ai', function () {
+    $response = Illuminate\Support\Facades\Http::withOptions(['verify' => false])
+        ->post("https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=" . env('GEMINI_API_KEY'), [
+            'contents' => [['parts' => [['text' => 'Hola']]]]
+        ]);
+    return $response->json();
+});
+
+Route::get('/list-models', function () {
+    $response = Illuminate\Support\Facades\Http::withOptions(['verify' => false])
+        ->get("https://generativelanguage.googleapis.com/v1/models?key=" . env('GEMINI_API_KEY'));
+    return $response->json();
+});
 
 
 });

@@ -57,6 +57,7 @@
     
     @yield('scripts')
 
+    <x-chat-widget />
 </body>
 
 </html>
