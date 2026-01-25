@@ -39,6 +39,27 @@
               <td class="p-2 text-right">{{ number_format($order->total, 2) }}</td>
               <td class="p-2">{{ $order->created_at->format('d/m/Y') }}</td>
             </tr>
+            {{-- Fila expandible con detalles de productos --}}
+            <tr class="border-b bg-gray-50">
+              <td colspan="4" class="p-3">
+                <div class="text-sm font-semibold mb-2">Productos:</div>
+                <div class="flex flex-wrap gap-3">
+                  @foreach($order->products as $product)
+                    <div class="flex items-center gap-2 bg-white border rounded p-2">
+                      @if($product->image)
+                        <img src="{{ asset($product->image) }}" 
+                             alt="{{ $product->brand }}" 
+                             class="h-12 w-auto object-contain">
+                      @endif
+                      <div class="text-sm">
+                        <div class="font-medium">{{ $product->brand }} {{ $product->model }}</div>
+                        <div class="text-gray-600">{{ $product->gauge }} · x{{ $product->pivot->quantity }}</div>
+                      </div>
+                    </div>
+                  @endforeach
+                </div>
+              </td>
+            </tr>
           @endforeach
         </tbody>
       </table>

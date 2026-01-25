@@ -45,7 +45,15 @@
                         <small>
                             <ul class="list-unstyled mb-0">
                                 @foreach($order->products->take(2) as $prod)
-                                    <li>{{ $prod->model }} (x{{ $prod->pivot->quantity }})</li>
+                                    <li class="d-flex align-items-center gap-2 mb-1">
+                                        @if($prod->image)
+                                            <img src="{{ asset($prod->image) }}" 
+                                                 alt="{{ $prod->brand }}" 
+                                                 class="rounded"
+                                                 style="height: 30px; width: auto; object-fit: contain;">
+                                        @endif
+                                        <span>{{ $prod->model }} (x{{ $prod->pivot->quantity }})</span>
+                                    </li>
                                 @endforeach
                                 @if($order->products->count() > 2)
                                     <li class="text-muted fst-italic">+ {{ $order->products->count() - 2 }} más...</li>

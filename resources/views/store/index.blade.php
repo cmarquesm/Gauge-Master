@@ -65,6 +65,15 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       @foreach($products as $product)
         <div class="border rounded-lg p-4">
+          {{-- Imagen del producto --}}
+          @if($product->image)
+            <div class="mb-3 flex justify-center">
+              <img src="{{ asset($product->image) }}" 
+                   alt="{{ $product->brand }}" 
+                   class="h-24 w-auto object-contain rounded">
+            </div>
+          @endif
+
           <div class="text-sm text-gray-600">{{ $product->brand }}</div>
           <div class="font-semibold">{{ $product->model }} · {{ $product->gauge }}</div>
           <div class="text-sm mb-3">{{ $product->description }}</div>
