@@ -1,4 +1,9 @@
-<x-guest-layout>
+@extends('layouts.main')
+
+@section('content')
+<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold text-center mb-6">Iniciar Sesión</h2>
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -44,4 +49,5 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+</div>
+@endsection
