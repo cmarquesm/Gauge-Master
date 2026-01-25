@@ -48,7 +48,7 @@ class OrderController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.orders.index')->with('success', 'Pedido creado correctamente.');
+        return redirect()->route('admin.dashboard')->with('success', 'Pedido creado correctamente.');
     }
 
     public function edit(Order $order)
@@ -86,12 +86,23 @@ class OrderController extends Controller
         }
         $order->products()->sync($syncData);
 
-        return redirect()->route('admin.orders.index')->with('success', 'Pedido actualizado correctamente.');
+        return redirect()->route('admin.dashboard')->with('success', 'Pedido actualizado correctamente.');
     }
 
     public function destroy(Order $order)
     {
         $order->delete();
-        return redirect()->route('admin.orders.index')->with('success', 'Pedido eliminado.');
+        return redirect()->route('admin.dashboard')->with('success', 'Pedido eliminado.');
+    }
+
+    public function updateStatus(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,paid,shipped,cancelled,completed',
+        ]);
+
+        $order->update(['status' => $request->status]);
+
+        return back()->with('success', 'Estado del pedido actualizado.');
     }
 }

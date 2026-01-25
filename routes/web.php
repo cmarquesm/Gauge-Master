@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
     Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
     Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
     Route::post('/checkout', [CartController::class, 'place'])->name('checkout.place');
     // Vista de órdenes para el usuario
     Route::get('/profile/orders', [ProfileOrderController::class, 'index'])->name('profile.orders.index');
@@ -66,6 +67,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::resource('users', UserController::class)->except(['show']);
     Route::resource('products', ProductController::class);
     Route::resource('orders', OrderController::class)->except(['create', 'store']);
+    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 });
 
 

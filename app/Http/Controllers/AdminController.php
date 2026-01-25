@@ -13,6 +13,17 @@ class AdminController extends Controller
         $userCount = User::count();
         $orderCount = Order::count();
 
-        return view('admin.dashboard', compact('userCount', 'orderCount'));
+        // Data for Tabs
+        $users = User::latest()->paginate(10, ['*'], 'users_page');
+        $products = \App\Models\Product::latest()->paginate(10, ['*'], 'products_page');
+        $orders = Order::with('user')->latest()->paginate(10, ['*'], 'orders_page');
+
+        return view('admin.dashboard', compact(
+            'userCount', 
+            'orderCount',
+            'users',
+            'products',
+            'orders'
+        ));
     }
 }

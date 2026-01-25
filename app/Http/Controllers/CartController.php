@@ -212,4 +212,12 @@ class CartController extends Controller
             ->route('cart.show')
             ->with('success', "Compra realizada. Pedido #{$order->id}");
     }
+
+    public function clear(Request $request)
+    {
+        $userId = $request->user()->id;
+        CartItem::where('user_id', $userId)->delete();
+
+        return back()->with('success', 'Carrito vaciado correctamente.');
+    }
 }

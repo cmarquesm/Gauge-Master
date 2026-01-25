@@ -5,50 +5,40 @@
   <title>Gauge Master — Admin</title>
   @vite('resources/css/app.css')
   @vite('resources/js/app.js')
+  {{-- Bootstrap 5 for Tabs --}}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 min-h-screen">
-  <div class="flex min-h-screen">
-    <!-- Sidebar -->
-    <aside class="w-64 bg-white border-r">
-      <div class="p-6">
-        <h1 class="text-xl font-bold">Gauge Master</h1>
+  {{-- Topbar --}}
+  <nav class="bg-white border-b px-6 py-4 flex items-center justify-between shadow-sm">
+    <div class="flex items-center gap-3">
+        <h1 class="text-xl font-bold text-gray-800">Gauge Master</h1>
+        <span class="text-gray-400">|</span>
+        <div class="text-lg font-semibold text-gray-700">Panel de Administración</div>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <div class="text-end hidden md:block">
+        <div class="font-semibold text-sm">{{ Auth::user()->name }}</div>
+        <div class="text-xs text-gray-500">{{ Auth::user()->email }}</div>
       </div>
+      <img src="{{ Auth::user()->avatar ?? asset('images/default-avatar.png') }}" class="w-10 h-10 rounded-full border" alt="avatar">
+      
+      <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button class="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition">Salir</button>
+      </form>
+    </div>
+  </nav>
 
-      <nav class="px-4 py-2 space-y-2">
-        <a href="{{ url('/admin/dashboard') }}" class="block px-4 py-2 rounded hover:bg-gray-100">Panel de control</a>
-        <a href="{{ url('/admin/products') }}" class="block px-4 py-2 rounded hover:bg-gray-100">Productos</a>
-        <a href="{{ url('/admin/users') }}" class="block px-4 py-2 rounded hover:bg-gray-100">Usuarios</a>
-        <a href="{{ url('/admin/orders') }}" class="block px-4 py-2 rounded hover:bg-gray-100">Pedidos</a>
-      </nav>
+  {{-- Main Content (No Sidebar) --}}
+  <main class="w-full">
+    <section class="p-4 md:p-8">
+      @yield('content')
+    </section>
+  </main>
 
-      <div class="p-4 mt-auto">
-        <a href="{{ url('/') }}" class="block px-4 py-2 rounded hover:bg-gray-100">Salir</a>
-      </div>
-    </aside>
-
-    <!-- Contenido -->
-    <main class="flex-1">
-      <!-- Topbar -->
-      <nav class="bg-white border-b px-6 py-4 flex items-center justify-between">
-        <div class="text-lg font-semibold">Panel de Administración</div>
-
-        <div class="flex items-center gap-4">
-          <img src="{{ Auth::user()->avatar ?? asset('images/default-avatar.png') }}" class="w-10 h-10 rounded-full" alt="avatar">
-          <div class="text-sm">
-            <div class="font-semibold">{{ Auth::user()->name }}</div>
-            <div class="text-gray-500">{{ Auth::user()->email }}</div>
-          </div>
-          <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">Logout</button>
-          </form>
-        </div>
-      </nav>
-
-      <section class="p-8">
-        @yield('content')
-      </section>
-    </main>
-  </div>
+  {{-- Bootstrap JS --}}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -83,12 +83,21 @@
             Total: {{ number_format($total, 2) }} €
         </div>
 
-        <form method="POST" action="{{ route('checkout.place') }}">
-            @csrf
-            <button class="px-5 py-2 rounded bg-black text-white">
-                Confirmar compra
-            </button>
-        </form>
+        <div class="flex items-center gap-4">
+            <form method="POST" action="{{ route('cart.clear') }}" onsubmit="return confirm('¿Estás seguro de que deseas vaciar todo el carrito?');">
+                @csrf
+                <button class="text-red-600 hover:underline">
+                    Vaciar Carrito
+                </button>
+            </form>
+
+            <form method="POST" action="{{ route('checkout.place') }}">
+                @csrf
+                <button class="px-5 py-2 rounded bg-black text-white">
+                    Confirmar compra
+                </button>
+            </form>
+        </div>
     </div>
     @endif
 </div>

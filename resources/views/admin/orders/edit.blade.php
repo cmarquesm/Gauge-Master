@@ -49,7 +49,7 @@
         </div>
 
         <button type="submit" class="btn btn-success">Actualizar Pedido</button>
-        <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">Volver</a>
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Volver</a>
     </form>
 </div>
 
