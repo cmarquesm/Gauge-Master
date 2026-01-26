@@ -52,7 +52,7 @@
                                                  class="rounded"
                                                  style="height: 30px; width: auto; object-fit: contain;">
                                         @endif
-                                        <span>{{ $prod->model }} (x{{ $prod->pivot->quantity }})</span>
+                                        <span>{{ $prod->brand }} - {{ $prod->gauge }}" (x{{ $prod->pivot->quantity }})</span>
                                     </li>
                                 @endforeach
                                 @if($order->products->count() > 2)

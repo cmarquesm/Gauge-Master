@@ -22,7 +22,7 @@
             <div class="product-row d-flex mb-2">
                 <select name="products[]" class="form-select me-2" required>
                     @foreach ($products as $product)
-                        <option value="{{ $product->id }}" {{ $p->id == $product->id ? 'selected' : '' }}>{{ $product->model }}</option>
+                        <option value="{{ $product->id }}" {{ $p->id == $product->id ? 'selected' : '' }}>{{ $product->brand }} - {{ $product->gauge }}"</option>
                     @endforeach
                 </select>
                 <input type="number" name="quantities[]" class="form-control me-2" value="{{ $p->pivot->quantity }}" required>

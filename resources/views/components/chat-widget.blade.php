@@ -13,6 +13,9 @@
             this.message = '';
             this.isLoading = true;
 
+            // Capturar contexto de la calculadora si está disponible
+            const context = this.captureCalculatorContext();
+
             try {
                 const response = await fetch('/api/chat', {
                     method: 'POST',
@@ -20,7 +23,10 @@
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
                     },
-                    body: JSON.stringify({ message: userMsg })
+                    body: JSON.stringify({ 
+                        message: userMsg,
+                        context: context
+                    })
                 });
 
                 if (!response.ok) throw new Error('Network error');
@@ -38,6 +44,36 @@
                     container.scrollTop = container.scrollHeight;
                 });
             }
+        },
+        captureCalculatorContext() {
+            // Intentar capturar valores de la calculadora
+            const scaleInput = document.getElementById('scale');
+            const presetTuning = document.getElementById('preset-tuning');
+            const totalTensionEl = document.getElementById('total-tension');
+            const gaugeInputs = document.querySelectorAll('.calibre-input');
+            
+            // Si no hay calculadora en la página, retornar null
+            if (!scaleInput || !presetTuning || !totalTensionEl) {
+                return null;
+            }
+
+            // Capturar calibres actuales
+            const gauges = Array.from(gaugeInputs).map(input => input.value).join(', ');
+
+            // Obtener nombre legible de la afinación
+            const tuningMap = {
+                'E_standard': 'E estándar',
+                'Drop_D': 'Drop D',
+                'Drop_B': 'Drop B',
+                'Open_D': 'Open D'
+            };
+
+            return {
+                scale_length: scaleInput.value,
+                tuning_name: tuningMap[presetTuning.value] || presetTuning.value,
+                total_tension: totalTensionEl.textContent,
+                string_gauges: gauges
+            };
         }
     }"
     class="fixed bottom-5 right-5 z-50 flex flex-col items-end"
