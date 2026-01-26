@@ -4,8 +4,11 @@
 <div class="max-w-4xl mx-auto space-y-12">
     <!-- Sección Principal -->
     <section class="text-center">
-        <h2 class="text-3xl font-semibold mb-4">Sobre Gauge Master</h2>
-        <p class="text-gray-700 leading-relaxed">
+        <div class="flex justify-center mb-6">
+            <img src="{{ asset('images/LOGO editar.png') }}" alt="Gauge Master Logo" class="h-24 w-auto drop-shadow-sm">
+        </div>
+        <h2 class="text-3xl font-semibold mb-4 text-gray-800">Sobre Gauge Master</h2>
+        <p class="text-gray-700 leading-relaxed text-lg max-w-2xl mx-auto">
             Gauge Master es una aplicación para músicos y luthiers. Permite calcular tensiones y calibres
             según escala y afinación, guardar tus configuraciones y comprar cuerdas adaptadas.
         </p>

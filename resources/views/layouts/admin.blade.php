@@ -12,9 +12,12 @@
   {{-- Topbar --}}
   <nav class="bg-white border-b px-6 py-4 flex items-center justify-between shadow-sm">
     <div class="flex items-center gap-3">
-        <h1 class="text-xl font-bold text-gray-800">Gauge Master</h1>
+        <a href="{{ route('main') }}" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <img src="{{ asset('images/LOGO editar.png') }}" alt="Logo" class="h-8 w-auto">
+            <h1 class="text-xl font-bold text-gray-800">Gauge Master</h1>
+        </a>
         <span class="text-gray-400">|</span>
-        <div class="text-lg font-semibold text-gray-700">Panel de Administración</div>
+        <div class="text-lg font-semibold text-gray-500">Panel de Administración</div>
     </div>
 
     <div class="flex items-center gap-4">

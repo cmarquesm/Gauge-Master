@@ -10,25 +10,26 @@
 
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
 
-    <header class="bg-gray-900 text-white">
+    <header class="bg-white text-gray-900 border-b shadow-sm sticky top-0 z-50">
         <nav class="container mx-auto flex justify-between items-center py-4 px-4">
-            <h1 class="text-2xl font-bold">Gauge Master</h1>
-            <ul class="flex items-center space-x-6 text-sm uppercase">
-                <li><a href="{{ route('main') }}" class="hover:text-blue-400">Calculadora</a></li>
-                <li><a href="{{ route('info') }}" class="hover:text-blue-400">Información</a></li>
-                <li><a href="{{ route('store') }}" class="hover:text-blue-400">Tienda</a></li>
+            <a href="{{ route('main') }}" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                <img src="{{ asset('images/LOGO editar.png') }}" alt="Logo Gauge Master" class="h-12 w-auto">
+                <h1 class="text-2xl font-bold tracking-tight text-gray-800">Gauge Master</h1>
+            </a>
+            <ul class="flex items-center space-x-6 text-sm font-semibold uppercase">
+                <li><a href="{{ route('main') }}" class="text-gray-600 hover:text-indigo-600 transition-colors">Calculadora</a></li>
+                <li><a href="{{ route('info') }}" class="text-gray-600 hover:text-indigo-600 transition-colors">Información</a></li>
+                <li><a href="{{ route('store') }}" class="text-gray-600 hover:text-indigo-600 transition-colors">Tienda</a></li>
 
                 @auth
-
-                    <li><a href="{{ route('cart.show') }}" class="hover:text-blue-400">Carrito</a></li>
+                    <li><a href="{{ route('cart.show') }}" class="text-gray-600 hover:text-indigo-600 transition-colors">Carrito</a></li>
 
                     @if (Auth::user()->role === 'admin')
-                        <li><a href="{{ route('admin.dashboard') }}" class="text-yellow-400 hover:text-yellow-300">Admin</a>
-                        </li>
+                        <li><a href="{{ route('admin.dashboard') }}" class="text-amber-600 hover:text-amber-500">Admin</a></li>
                     @endif
                     <li class="relative group">
                         <a href="{{ route('profile.edit') }}"
-                            class="block w-9 h-9 rounded-full overflow-hidden border-2 border-gray-300">
+                            class="block w-9 h-9 rounded-full overflow-hidden border-2 border-gray-200 hover:border-indigo-400 transition-colors">
                             <img src="{{ Auth::user()->avatar_url ?? asset('images/default-avatar.png') }}" alt="avatar"
                                 class="w-full h-full object-cover">
                         </a>
@@ -36,12 +37,12 @@
                     <li>
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="hover:text-red-400">Salir</button>
+                            <button type="submit" class="text-gray-600 hover:text-red-500 transition-colors">Salir</button>
                         </form>
                     </li>
                 @else
-                    <li><a href="{{ route('login') }}" class="hover:text-blue-400">Login</a></li>
-                    <li><a href="{{ route('register') }}" class="hover:text-blue-400">Registro</a></li>
+                    <li><a href="{{ route('login') }}" class="text-gray-600 hover:text-indigo-600 transition-colors">Login</a></li>
+                    <li><a href="{{ route('register') }}" class="text-gray-600 hover:text-indigo-600 transition-colors">Registro</a></li>
                 @endauth
             </ul>
         </nav>

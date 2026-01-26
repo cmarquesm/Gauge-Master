@@ -1,8 +1,13 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
-    <h2 class="text-2xl font-bold text-center mb-6">Iniciar Sesión</h2>
+<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md mt-12">
+    <div class="flex justify-center mb-6">
+        <a href="{{ route('main') }}">
+            <img src="{{ asset('images/LOGO editar.png') }}" alt="Logo Gauge Master" class="h-16 w-auto">
+        </a>
+    </div>
+    <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Iniciar Sesión</h2>
 
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
