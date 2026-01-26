@@ -9,7 +9,10 @@ class StoreController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::query();
+        $query = Product::query()
+            ->where('brand', '!=', 'CUSTOM')
+            ->where('description', '!=', 'set personalizado creado en la calculadora')
+            ->where('gauge', '!=', 'custom');
 
         // Filtros
         if ($request->filled('brand')) {
@@ -37,10 +40,27 @@ class StoreController extends Controller
 
         $products = $query->paginate(24)->withQueryString();
 
-        // Opciones para filtros (desde BD)
-        $brands = Product::query()->select('brand')->distinct()->orderBy('brand')->pluck('brand');
-        $materials = Product::query()->select('description')->distinct()->orderBy('description')->pluck('description');
-        $gauges = Product::query()->select('gauge')->distinct()->orderBy('gauge')->pluck('gauge');
+        // Opciones para filtros (desde BD) - Excluir valores CUSTOM y sets personalizados
+        $brands = Product::query()
+            ->select('brand')
+            ->distinct()
+            ->where('brand', '!=', 'CUSTOM')
+            ->orderBy('brand')
+            ->pluck('brand');
+        
+        $materials = Product::query()
+            ->select('description')
+            ->distinct()
+            ->where('description', '!=', 'set personalizado creado en la calculadora')
+            ->orderBy('description')
+            ->pluck('description');
+        
+        $gauges = Product::query()
+            ->select('gauge')
+            ->distinct()
+            ->where('gauge', '!=', 'custom')
+            ->orderBy('gauge')
+            ->pluck('gauge');
 
         return view('store.index', compact('products', 'brands', 'materials', 'gauges', 'sort'));
     }
