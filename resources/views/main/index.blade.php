@@ -261,23 +261,8 @@
         <form id="save-tuning-form" method="POST" action="{{ route('tunings.store') }}" class="space-y-4">
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="text" name="name" id="tuning-name" required class="bg-black text-green-400 border border-gray-800 p-2 rounded font-mono" placeholder="Preset Name">
-                
-                @php
-                $brands = \App\Models\Product::query()
-                ->where('stock', '>', 0)
-                ->select('brand')
-                ->distinct()
-                ->orderBy('brand')
-                ->pluck('brand');
-                @endphp
-
-                <select name="manufacturer" id="cart-manufacturer" class="bg-black text-green-400 border border-gray-800 p-2 rounded font-mono" required>
-                    <option value="">Select Manufacturer...</option>
-                    @foreach($brands as $brand)
-                    <option value="{{ $brand }}">{{ $brand }}</option>
-                    @endforeach
-                </select>
+            <div class="grid grid-cols-1 gap-4">
+                <input type="text" name="name" id="tuning-name" required class="bg-black text-green-400 border border-gray-800 p-2 rounded font-mono w-full" placeholder="Preset Name">
             </div>
 
             <textarea name="description" id="tuning-description" rows="2" class="w-full bg-black text-green-400 border border-gray-800 p-2 rounded font-mono" placeholder="Description"></textarea>
@@ -286,6 +271,7 @@
             <input type="hidden" name="gauges" id="tuning-gauges">
             <input type="hidden" name="tensions" id="tuning-tensions">
             <input type="hidden" name="total_tension" id="tuning-total">
+            <input type="hidden" name="material" id="tuning-material">
 
             <div class="flex justify-end gap-3">
                 <button type="submit" class="px-6 py-2 bg-green-900 text-green-200 rounded uppercase text-xs font-bold hover:bg-green-800 transition">Confirm Save</button>

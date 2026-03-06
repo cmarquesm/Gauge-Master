@@ -211,11 +211,13 @@ document.addEventListener("DOMContentLoaded", () => {
             document.querySelectorAll("[data-tension]"),
         ).map((td) => td.textContent);
         const total = document.getElementById("total-tension").textContent;
+        const material = document.getElementById("calc-material").value;
 
         document.getElementById("tuning-notes").value = notas.join(",");
         document.getElementById("tuning-gauges").value = calibres.join(",");
         document.getElementById("tuning-tensions").value = tensiones.join(",");
         document.getElementById("tuning-total").value = total;
+        document.getElementById("tuning-material").value = material;
     });
 });
 
