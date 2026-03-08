@@ -86,55 +86,52 @@ class CartController extends Controller
         $userId = $request->user()->id;
         $missing = [];
 
-        DB::transaction(function () use ($userId, $validated, $notes, $gauges, $tensions, &$missing) {
-            // Limpia posibles restos de un intento previo reciente (opcional)
-            // CartItem::where('user_id', $userId)->whereNotNull('meta')->delete();
+        try {
+            DB::transaction(function () use ($userId, $validated, $notes, $gauges, $tensions, &$missing) {
+                foreach ($gauges as $idx => $g) {
+                    $gFloat = (float) $g;
+                    $g3 = number_format($gFloat, 3, '.', '');          
+                    $gDb = preg_replace('/^0\./', '.', $g3); 
 
-            foreach ($gauges as $idx => $g) {
-                // gauges llega como "0.010" etc
-                $gFloat = (float) $g;
-                $g3 = number_format($gFloat, 3, '.', '');          // "0.010"
-                $gThou = (string) (int) round($gFloat * 1000);     // "10"
-                $gDb = preg_replace('/^0\./', '.', $g3); // "0.010" -> ".010"
+                    $product = Product::query()
+                        ->where('brand', $validated['manufacturer'])
+                        ->where('stock', '>', 0)
+                        ->where(function ($q) use ($g3, $gDb) {
+                            $q->where('gauge', $gDb)   
+                                ->orWhere('gauge', $g3); 
+                        })
+                        ->orderByDesc('stock')
+                        ->first();
 
-                $product = Product::query()
-                    ->where('brand', $validated['manufacturer'])
-                    ->where('stock', '>', 0)
-                    ->where(function ($q) use ($g3, $gDb) {
-                        $q->where('gauge', $gDb)   // ".010"
-                            ->orWhere('gauge', $g3); // "0.010" (por si acaso)
-                    })
+                    if (!$product) {
+                        $missing[] = $g3;
+                        continue;
+                    }
 
-                    ->orderByDesc('stock')
-                    ->first();
-
-                if (!$product) {
-                    $missing[] = $g3;
-                    continue;
+                    CartItem::create([
+                        'user_id'    => $userId,
+                        'product_id' => $product->id,
+                        'quantity'   => 1,
+                        'meta'       => [
+                            'type'             => 'custom_set_string',
+                            'note'             => $notes[$idx] ?? null,
+                            'tension'          => $tensions[$idx] ?? null,
+                            'scale'            => $validated['scale'] ?? null,
+                            'set_total_tension' => (float) $validated['total_tension'],
+                            'material'         => $validated['material'],
+                        ],
+                    ]);
                 }
 
-                CartItem::create([
-                    'user_id'    => $userId,
-                    'product_id' => $product->id,
-                    'quantity'   => 1,
-                    'meta'       => [
-                        'type'             => 'custom_set_string',
-                        'note'             => $notes[$idx] ?? null,
-                        'tension'          => $tensions[$idx] ?? null,
-                        'scale'            => $validated['scale'] ?? null,
-                        'set_total_tension' => (float) $validated['total_tension'],
-                        'material'         => $validated['material'],
-                    ],
-                ]);
-            }
+                if (!empty($missing)) {
+                    throw new \RuntimeException('No se encontraron calibres disponibles para: ' . implode(', ', $missing));
+                }
+            });
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
 
-            // Si falta alguno, abortamos la transacción para que no se añada un set incompleto
-            if (!empty($missing)) {
-                throw new \RuntimeException('Missing gauges: ' . implode(', ', $missing));
-            }
-        });
-
-        return redirect()->route('cart.show')->with('success', 'Set añadido al carrito con productos reales.');
+        return redirect()->route('cart.show')->with('success', 'Set añadido al carrito.');
     }
 
 

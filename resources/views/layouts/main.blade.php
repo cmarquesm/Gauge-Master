@@ -18,7 +18,7 @@
             </a>
             <ul class="flex items-center space-x-6 text-sm font-semibold uppercase">
                 <li><a href="{{ route('main') }}" class="text-gray-600 hover:text-indigo-600 transition-colors">Calculadora</a></li>
-                <li><a href="{{ route('info') }}" class="text-gray-600 hover:text-indigo-600 transition-colors">Información</a></li>
+                <li><a href="{{ route('info') }}" class="text-gray-600 hover:text-indigo-600 transition-colors">Tools e Info</a></li>
                 <li><a href="{{ route('store') }}" class="text-gray-600 hover:text-indigo-600 transition-colors">Tienda</a></li>
 
                 @auth

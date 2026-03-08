@@ -34,7 +34,7 @@
                 const data = await response.json();
                 this.messages.push({ sender: 'bot', text: data.reply });
             } catch (error) {
-                this.messages.push({ sender: 'bot', text: 'Error: Could not reach the expert.' });
+                this.messages.push({ sender: 'bot', text: 'Error: No se pudo contactar con Caribou AI.' });
                 console.error(error);
             } finally {
                 this.isLoading = false;
@@ -44,6 +44,14 @@
                     container.scrollTop = container.scrollHeight;
                 });
             }
+        },
+        formatMessage(text) {
+            if (!text) return '';
+            // Reemplazar **texto** por <b>texto</b>
+            let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            // Reemplazar saltos de línea por <br>
+            formatted = formatted.replace(/\n/g, '<br>');
+            return formatted;
         },
         captureCalculatorContext() {
             // Intentar capturar valores de la calculadora
@@ -90,13 +98,10 @@
         class="mb-4 w-[90vw] sm:w-[500px] bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col h-[600px] max-h-[80vh]"
         style="display: none;"
     >
-        <!-- Header -->
         <div class="bg-indigo-600 p-4 text-white flex justify-between items-center">
             <h3 class="font-bold flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                </svg>
-                Physics Expert
+                <img src="{{ asset('images/caribou-logo.png') }}" alt="Logo Caribou" class="h-6 w-6 rounded-full bg-white p-0.5">
+                Caribou AI
             </h3>
             <button @click="toggle" class="hover:bg-indigo-700 rounded p-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -110,9 +115,9 @@
             <template x-for="(msg, index) in messages" :key="index">
                 <div :class="msg.sender === 'user' ? 'text-right' : 'text-left'">
                     <div 
-                        class="inline-block px-4 py-2 rounded-lg text-sm max-w-[85%]"
+                        class="inline-block px-4 py-2 rounded-lg text-sm max-w-[85%] break-words"
                         :class="msg.sender === 'user' ? 'bg-indigo-600 text-white rounded-br-none' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-bl-none'"
-                        x-text="msg.text"
+                        x-html="formatMessage(msg.text)"
                     ></div>
                 </div>
             </template>
@@ -128,7 +133,7 @@
             </div>
             
             <div x-show="messages.length === 0" class="text-center text-gray-500 dark:text-gray-400 text-sm mt-4">
-                Ask me about string tension, gauge, or tuning!
+                ¡Pregúntame lo que quieras!
             </div>
         </div>
 
@@ -138,7 +143,7 @@
                 <input 
                     type="text" 
                     x-model="message" 
-                    placeholder="Type your question..." 
+                    placeholder="Escribe tu pregunta..." 
                     class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
                 >
                 <button 
@@ -155,16 +160,47 @@
     </div>
 
     <!-- Toggle Button -->
-    <button 
-        @click="toggle" 
-        class="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full p-4 shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+    <div 
         x-show="!open"
         x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 scale-50"
         x-transition:enter-end="opacity-100 scale-100"
+        class="relative group"
     >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-        </svg>
-    </button>
+        <button 
+            @click="toggle" 
+            class="bg-white p-1 rounded-full shadow-2xl transition-all duration-500 hover:scale-110 focus:outline-none ring-4 ring-indigo-600/20 active:scale-95 animate-subtle-float"
+        >
+            <div class="relative flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24">
+                <!-- Circular Text -->
+                <svg class="absolute w-full h-full animate-spin-slow" viewBox="0 0 100 100">
+                    <defs>
+                        <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
+                    </defs>
+                    <text class="text-[10px] uppercase font-bold fill-indigo-600 tracking-[0.2em]">
+                        <textPath xlink:href="#circlePath">Pregúntale a Caribou</textPath>
+                    </text>
+                </svg>
+                <!-- Central Logo -->
+                <img src="{{ asset('images/caribou-logo.png') }}" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-lg" alt="Caribou">
+            </div>
+        </button>
+    </div>
+
+    <style>
+        @keyframes subtle-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .animate-subtle-float {
+            animation: subtle-float 3s ease-in-out infinite;
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 25s linear infinite;
+        }
+    </style>
 </div>

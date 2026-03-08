@@ -138,6 +138,11 @@
 </style>
 
 <div class="max-w-4xl mx-auto my-12">
+    <script>
+        window.isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
+        window.loginUrl = "{{ route('login') }}";
+    </script>
+
     <div class="amp-cabinet rounded-xl p-4 sm:p-8">
         <!-- Esquineras -->
         <div class="corner-metal corner-tl"></div>
@@ -245,7 +250,7 @@
 
             <!-- Botones de Acción Secundarios -->
             <div class="mt-8 flex flex-wrap justify-center gap-4">
-                <button type="button" onclick="document.getElementById('save-tuning-panel').classList.toggle('hidden')" class="px-4 py-2 bg-gray-800 text-gray-400 border border-gray-700 rounded text-xs uppercase hover:bg-gray-700 transition">
+                <button type="button" id="save-tuning-btn" class="px-4 py-2 bg-gray-800 text-gray-400 border border-gray-700 rounded text-xs uppercase hover:bg-gray-700 transition">
                     Save Config
                 </button>
                 <button type="button" id="add-to-cart-btn" class="px-4 py-2 bg-indigo-900 text-indigo-200 border border-indigo-700 rounded text-xs uppercase hover:bg-indigo-800 transition">

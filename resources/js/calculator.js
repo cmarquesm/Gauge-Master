@@ -194,6 +194,107 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+function openModal() {
+    const modal = document.getElementById("add-to-cart-modal");
+    if (!modal) return;
+    
+    const notas = Array.from(document.querySelectorAll(".nota-select")).map(
+        (s) => s.value,
+    );
+    const calibres = Array.from(
+        document.querySelectorAll(".calibre-input"),
+    ).map((i) => i.value);
+    const tensiones = Array.from(
+        document.querySelectorAll("[data-tension]"),
+    ).map((td) => td.textContent);
+    const total =
+        document.getElementById("total-tension")?.textContent ?? "0";
+    const scale = document.getElementById("scale")?.value ?? "";
+
+    document.getElementById("cart-notes").value = notas.join(",");
+    document.getElementById("cart-gauges").value = calibres.join(",");
+    document.getElementById("cart-tensions").value = tensiones.join(",");
+    document.getElementById("cart-total").value = total;
+    document.getElementById("cart-scale").value = scale;
+
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+}
+
+function closeModal() {
+    const modal = document.getElementById("add-to-cart-modal");
+    if (modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+    }
+}
+
+// Cargar parámetros de URL y estado previo
+document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const action = urlParams.get("action");
+
+    if (action) {
+        restoreCalculatorState();
+        if (action === "save") {
+            const panel = document.getElementById("save-tuning-panel");
+            if (panel) panel.classList.remove("hidden");
+        } else if (action === "order") {
+            openModal();
+        }
+    }
+});
+
+function saveCalculatorState() {
+    const state = {
+        tuning: document.getElementById("preset-tuning").value,
+        scale: document.getElementById("scale").value,
+        material: document.getElementById("calc-material").value,
+        tension: document.getElementById("tension").value,
+        rows: Array.from(document.querySelectorAll("#string-rows tr")).map(
+            (tr) => ({
+                nota: tr.querySelector(".nota-select").value,
+                calibre: tr.querySelector(".calibre-input").value,
+            }),
+        ),
+    };
+    localStorage.setItem("calculator_state", JSON.stringify(state));
+}
+
+function restoreCalculatorState() {
+    const saved = localStorage.getItem("calculator_state");
+    if (!saved) return;
+    const state = JSON.parse(saved);
+
+    document.getElementById("preset-tuning").value = state.tuning;
+    document.getElementById("scale").value = state.scale;
+    document.getElementById("calc-material").value = state.material;
+    document.getElementById("tension").value = state.tension;
+
+    const tbody = document.getElementById("string-rows");
+    tbody.innerHTML = "";
+
+    // Necesitamos recrear la tabla con los valores guardados
+    // Esto es un poco redundante con renderTabla pero permite restaurar cambios manuales
+    renderTabla(
+        state.rows.map((r) => r.nota),
+        parseFloat(state.scale),
+        state.tension,
+    );
+
+    // Ajustar calibres manuales si los hay
+    const rows = document.querySelectorAll("#string-rows tr");
+    state.rows.forEach((r, i) => {
+        if (rows[i]) {
+            const inp = rows[i].querySelector(".calibre-input");
+            inp.value = r.calibre;
+            inp.dispatchEvent(new Event("input"));
+        }
+    });
+
+    localStorage.removeItem("calculator_state");
+}
+
 // --- Guardar afinación (hidden inputs) ---
 // Ajuste: ahora el select del form tiene id="tuning-material" (ya no usamos id="material")
 document.addEventListener("DOMContentLoaded", () => {
@@ -229,36 +330,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!openBtn || !modal || !cancelBtn) return;
 
-    const openModal = () => {
-        const notas = Array.from(document.querySelectorAll(".nota-select")).map(
-            (s) => s.value,
-        );
-        const calibres = Array.from(
-            document.querySelectorAll(".calibre-input"),
-        ).map((i) => i.value);
-        const tensiones = Array.from(
-            document.querySelectorAll("[data-tension]"),
-        ).map((td) => td.textContent);
-        const total =
-            document.getElementById("total-tension")?.textContent ?? "0";
-        const scale = document.getElementById("scale")?.value ?? "";
+    openBtn.addEventListener("click", () => {
+        if (!window.isLoggedIn) {
+            saveCalculatorState();
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set("action", "order");
+            window.location.href =
+                window.loginUrl +
+                "?redirect_to=" +
+                encodeURIComponent(currentUrl.pathname + currentUrl.search);
+            return;
+        }
+        openModal();
+    });
 
-        document.getElementById("cart-notes").value = notas.join(",");
-        document.getElementById("cart-gauges").value = calibres.join(",");
-        document.getElementById("cart-tensions").value = tensiones.join(",");
-        document.getElementById("cart-total").value = total;
-        document.getElementById("cart-scale").value = scale;
+    const saveBtn = document.getElementById("save-tuning-btn");
+    if (saveBtn) {
+        saveBtn.addEventListener("click", () => {
+            if (!window.isLoggedIn) {
+                saveCalculatorState();
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set("action", "save");
+                window.location.href =
+                    window.loginUrl +
+                    "?redirect_to=" +
+                    encodeURIComponent(currentUrl.pathname + currentUrl.search);
+                return;
+            }
+            const panel = document.getElementById("save-tuning-panel");
+            if (panel) panel.classList.toggle("hidden");
+        });
+    }
 
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-    };
-
-    const closeModal = () => {
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
-    };
-
-    openBtn.addEventListener("click", openModal);
     cancelBtn.addEventListener("click", closeModal);
 
     modal.addEventListener("click", (e) => {

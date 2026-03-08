@@ -28,6 +28,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if ($request->has('redirect_to')) {
+            return redirect($request->input('redirect_to'));
+        }
+
         return redirect()->intended(route('main', absolute: false));
     }
 

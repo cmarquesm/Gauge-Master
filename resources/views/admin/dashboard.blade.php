@@ -4,8 +4,7 @@
 <div class="container-fluid px-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 class="fw-bold mb-1 text-dark">Panel de Administración</h2>
-            <p class="text-muted mb-0">Gestión integral del sistema</p>
+            <h3 class="fw-bold mb-0 text-dark">Gestión Del Sistema</h3>
         </div>
         <div class="text-muted small">
             <i class="bi bi-calendar3 me-1"></i> {{ now()->format('d M, Y') }}
@@ -45,7 +44,7 @@
         {{-- Resumen --}}
         <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
             <div class="row g-4">
-                <div class="col-md-4 col-lg-3">
+                <div class="col-md-6">
                     <div class="card border-0 shadow-sm h-100 bg-light">
                         <div class="card-body p-4 text-center">
                             <h6 class="text-uppercase text-muted fw-bold mb-2">Total Usuarios</h6>
@@ -53,19 +52,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-lg-3">
+                <div class="col-md-6">
                     <div class="card border-0 shadow-sm h-100 bg-light">
                         <div class="card-body p-4 text-center">
                             <h6 class="text-uppercase text-muted fw-bold mb-2">Total Pedidos</h6>
                             <h1 class="display-6 fw-bold text-success mb-0">{{ $orderCount }}</h1>
-                        </div>
-                    </div>
-                </div>
-                {{-- Quick Actions / More Stats --}}
-                <div class="col-md-4 col-lg-6">
-                     <div class="card border-0 shadow-sm h-100 bg-light">
-                        <div class="card-body p-4 d-flex align-items-center justify-content-center text-muted">
-                            <span class="fst-italic">Más estadísticas próximamente...</span>
                         </div>
                     </div>
                 </div>
