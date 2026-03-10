@@ -156,7 +156,6 @@
                 <div class="flex-1"></div>
                 <div class="flex-1 flex flex-col items-center">
                     <img src="{{ asset('images/LOGO editar.png') }}" alt="Logo" class="h-20 w-auto mb-2 opacity-90">
-                    <span class="text-indigo-900 font-bold uppercase tracking-widest text-xs italic">Precision Tension Expert</span>
                 </div>
                 <div class="flex-1 flex justify-end">
                     <div class="w-8 h-8 rounded-full bg-red-600 border-4 border-gray-400 shadow-[0_0_15px_rgba(220,38,38,0.8)] animate-pulse"></div>
@@ -167,9 +166,9 @@
         <!-- Controls Panel -->
         <div class="amp-panel p-8 grid grid-cols-2 md:grid-cols-4 gap-8 items-end">
             <div class="knob-container">
-                <span class="knob-label">Tuning</span>
+                <span class="knob-label">Afinación</span>
                 <select id="preset-tuning" class="knob-input text-xs">
-                    <option value="E_standard" selected>E Standard</option>
+                    <option value="E_standard" selected>E Estándar</option>
                     <option value="Drop_D">Drop D</option>
                     <option value="Drop_B">Drop B</option>
                     <option value="Open_D">Open D</option>
@@ -177,7 +176,7 @@
             </div>
 
             <div class="knob-container">
-                <span class="knob-label text-indigo-900 mb-2">Scale Control</span>
+                <span class="knob-label text-indigo-900 mb-2">Control Escala</span>
                 <!-- Fluid Oval Display -->
                 <div class="bg-black rounded-[100%_/_100%] border-2 border-gray-600 shadow-md flex flex-col items-center justify-center w-44 h-16 p-2 relative">
                     <div class="flex items-center justify-around w-full px-2">
@@ -190,24 +189,24 @@
                         <button type="button" onclick="const s = document.getElementById('scale'); s.stepUp(); s.dispatchEvent(new Event('change'))" 
                                 class="text-gray-500 hover:text-white text-xl font-bold transition-colors w-6">+</button>
                     </div>
-                    <span class="text-[0.6rem] uppercase font-mono font-bold tracking-widest text-gray-500 leading-none mt-1">Inches</span>
+                    <span class="text-[0.6rem] uppercase font-mono font-bold tracking-widest text-gray-500 leading-none mt-1">Pulgadas</span>
                 </div>
             </div>
 
             <div class="knob-container">
                 <span class="knob-label">Material</span>
                 <select id="calc-material" class="knob-input text-xs">
-                    <option value="nickel" selected>Nickel</option>
-                    <option value="steel">Steel</option>
+                    <option value="nickel" selected>Níquel</option>
+                    <option value="steel">Acero</option>
                 </select>
             </div>
 
             <div class="knob-container">
-                <span class="knob-label">Tension</span>
+                <span class="knob-label">Tensión</span>
                 <select id="tension" class="knob-input text-xs">
-                    <option value="ligera">Light</option>
-                    <option value="media" selected>Medium</option>
-                    <option value="alta">High</option>
+                    <option value="ligera">Ligera</option>
+                    <option value="media" selected>Media</option>
+                    <option value="alta">Alta</option>
                 </select>
             </div>
         </div>
@@ -215,31 +214,30 @@
         <!-- Action Area (Footswitch) -->
         <div class="amp-panel p-8 flex justify-center items-center gap-12 bg-opacity-90">
             <div class="flex flex-col items-center gap-2">
-                <span class="knob-label text-indigo-900">Calculate</span>
+                <span class="knob-label text-indigo-900">Calcular</span>
                 <button id="calc-btn" class="footswitch-btn"></button>
             </div>
             
             <div class="digital-display flex flex-col items-center min-w-[200px]">
-                <span class="text-[0.6rem] uppercase tracking-tighter opacity-70 mb-1">Total Tension</span>
+                <span class="text-[0.6rem] uppercase tracking-tighter opacity-70 mb-1">Tensión Total</span>
                 <div class="text-3xl font-bold flex items-baseline gap-1">
                     <span id="total-tension">0</span>
-                    <span class="text-sm opacity-50">LBS</span>
+                    <span class="text-sm opacity-50">lb</span>
                 </div>
             </div>
         </div>
 
         <!-- Results Grid -->
         <div class="amp-grill rounded-b-lg p-6 min-h-[300px]">
-            <h3 class="text-white text-center font-mono text-sm uppercase tracking-widest mb-6 opacity-60">Results Grid</h3>
             
             <div class="overflow-x-auto">
                 <table class="w-full bg-black bg-opacity-60 text-green-400 font-mono text-sm border-separate border-spacing-1">
                     <thead>
                         <tr class="text-[0.6rem] uppercase opacity-70 text-gray-400">
                             <th class="p-2 border border-gray-800">#</th>
-                            <th class="p-2 border border-gray-800">Note</th>
-                            <th class="p-2 border border-gray-800">Gauge (in)</th>
-                            <th class="p-2 border border-gray-800">Tension (lb)</th>
+                            <th class="p-2 border border-gray-800">Nota</th>
+                            <th class="p-2 border border-gray-800">Calibre (in)</th>
+                            <th class="p-2 border border-gray-800">Tensión (lb)</th>
                         </tr>
                     </thead>
                     <tbody id="string-rows">
@@ -251,10 +249,10 @@
             <!-- Secondary Action Buttons -->
             <div class="mt-8 flex flex-wrap justify-center gap-4">
                 <button type="button" id="save-tuning-btn" class="px-4 py-2 bg-gray-800 text-gray-400 border border-gray-700 rounded text-xs uppercase hover:bg-gray-700 transition">
-                    Save Config
+                    Guardar Config
                 </button>
                 <button type="button" id="add-to-cart-btn" class="px-4 py-2 bg-indigo-900 text-indigo-200 border border-indigo-700 rounded text-xs uppercase hover:bg-indigo-800 transition">
-                    Order Set
+                    Comprar Set
                 </button>
             </div>
         </div>
@@ -262,15 +260,15 @@
 
     <!-- Hidden Panels -->
     <div id="save-tuning-panel" class="hidden mt-6 amp-cabinet p-6 rounded-lg">
-        <h3 class="text-xl font-bold text-gray-300 mb-4 font-mono uppercase">Save Preset</h3>
+        <h3 class="text-xl font-bold text-gray-300 mb-4 font-mono uppercase">Guardar Ajuste</h3>
         <form id="save-tuning-form" method="POST" action="{{ route('tunings.store') }}" class="space-y-4">
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="grid grid-cols-1 gap-4">
-                <input type="text" name="name" id="tuning-name" required class="bg-black text-green-400 border border-gray-800 p-2 rounded font-mono w-full" placeholder="Preset Name">
+                <input type="text" name="name" id="tuning-name" required class="bg-black text-green-400 border border-gray-800 p-2 rounded font-mono w-full" placeholder="Nombre del Ajuste">
             </div>
 
-            <textarea name="description" id="tuning-description" rows="2" class="w-full bg-black text-green-400 border border-gray-800 p-2 rounded font-mono" placeholder="Description"></textarea>
+            <textarea name="description" id="tuning-description" rows="2" class="w-full bg-black text-green-400 border border-gray-800 p-2 rounded font-mono" placeholder="Descripción"></textarea>
 
             <input type="hidden" name="notes" id="tuning-notes">
             <input type="hidden" name="gauges" id="tuning-gauges">
@@ -279,7 +277,7 @@
             <input type="hidden" name="material" id="tuning-material">
 
             <div class="flex justify-end gap-3">
-                <button type="submit" class="px-6 py-2 bg-green-900 text-green-200 rounded uppercase text-xs font-bold hover:bg-green-800 transition">Confirm Save</button>
+                <button type="submit" class="px-6 py-2 bg-green-900 text-green-200 rounded uppercase text-xs font-bold hover:bg-green-800 transition">Confirmar Guardado</button>
             </div>
         </form>
     </div>
@@ -287,15 +285,15 @@
     {{-- Add set to cart modal --}}
     <div id="add-to-cart-modal" class="fixed inset-0 hidden items-center justify-center bg-black/80 z-[100] p-4">
         <div class="amp-cabinet w-full max-w-lg rounded-lg p-6">
-            <h3 class="text-xl font-bold text-gray-300 mb-6 font-mono uppercase border-b border-gray-800 pb-2">Checkout Custom Set</h3>
+            <h3 class="text-xl font-bold text-gray-300 mb-6 font-mono uppercase border-b border-gray-800 pb-2">Finalizar Set Personalizado</h3>
 
             <form id="add-to-cart-form" method="POST" action="{{ route('cart.custom-set.add') }}" class="space-y-4">
                 @csrf
                 <div class="grid grid-cols-1 gap-4">
                     <div class="flex flex-col">
-                        <label class="text-xs uppercase text-gray-500 font-mono mb-1">Manufacturer</label>
+                        <label class="text-xs uppercase text-gray-500 font-mono mb-1">Fabricante</label>
                         <select name="manufacturer" id="cart-manufacturer-modal" class="bg-black text-green-400 border border-gray-800 p-2 rounded font-mono" required>
-                            <option value="">Select...</option>
+                            <option value="">Seleccionar...</option>
                             <option value="Daddario">Daddario</option>
                             <option value="Ernie Ball">Ernie Ball</option>
                         </select>
@@ -304,18 +302,18 @@
                     <div class="flex flex-col">
                         <label class="text-xs uppercase text-gray-500 font-mono mb-1">Material</label>
                         <select name="material" id="cart-material-modal" class="bg-black text-green-400 border border-gray-800 p-2 rounded font-mono" required>
-                            <option value="nickel">Nickel</option>
-                            <option value="steel">Stainless Steel</option>
+                            <option value="nickel">Níquel</option>
+                            <option value="steel">Acero Inoxidable</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="flex gap-4 justify-end mt-8">
                     <button type="button" id="add-to-cart-cancel" class="px-4 py-2 border border-gray-700 text-gray-500 rounded uppercase text-xs font-bold hover:bg-gray-800 transition">
-                        Cancel
+                        Cancelar
                     </button>
                     <button type="submit" class="px-6 py-2 bg-indigo-900 text-indigo-200 rounded uppercase text-xs font-bold hover:bg-indigo-800 transition">
-                        Add to Cart
+                        Añadir al Carrito
                     </button>
                 </div>
 
