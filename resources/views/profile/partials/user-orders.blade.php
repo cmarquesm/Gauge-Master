@@ -39,7 +39,7 @@
               <td class="p-2 text-right">{{ number_format($order->total, 2) }}</td>
               <td class="p-2">{{ $order->created_at->format('d/m/Y') }}</td>
             </tr>
-            {{-- Fila expandible con detalles de productos --}}
+            {{-- Expandable row with product details --}}
             <tr class="border-b bg-gray-50">
               <td colspan="4" class="p-3">
                 <div class="text-sm font-semibold mb-2">Productos:</div>

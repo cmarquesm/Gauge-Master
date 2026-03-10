@@ -41,7 +41,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'user',
         ]);
-        // Creación del perfil de usuario asociado (vacío inicialmente)
+        // Asssociated user profile creation (initially empty)
         $user->profile()->create([
             'phone' => null,
             'address' => null,

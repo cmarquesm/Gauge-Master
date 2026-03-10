@@ -1,4 +1,4 @@
-// --- Constantes físicas y materiales ---
+// Physical constants and materials
 const G = 386.4;
 const K_PLAIN = 0.222;
 const K_WOUND = 0.18;
@@ -6,7 +6,7 @@ const REF_SCALE = 25.5;
 
 const tensionRef = { ligera: 85, media: 102, alta: 120 };
 
-// --- Notas → frecuencia ---
+// Note to frequency conversion
 function noteToFreq(note) {
     const notes = [
         "C",
@@ -29,7 +29,7 @@ function noteToFreq(note) {
     return 440 * Math.pow(2, (midi - 69) / 12);
 }
 
-// --- Calibre desde tensión ---
+// Gauge calculation from tension
 function gaugeFromTension(T, L, F) {
     let d = Math.sqrt((T * G) / (K_PLAIN * Math.pow(2 * L * F, 2)));
     let type = "plain";
@@ -40,13 +40,13 @@ function gaugeFromTension(T, L, F) {
     return { diameter: d, type };
 }
 
-// --- Calcular tensión a partir de calibre ---
+// Tension calculation from gauge
 function tensionFromGauge(d, L, F) {
     const k = d > 0.018 ? K_WOUND : K_PLAIN;
     return (k * Math.pow(d, 2) * Math.pow(2 * L * F, 2)) / G;
 }
 
-// --- Cálculo principal ---
+// Main calculation logic
 function calcularSet(afinacion, escala, nivel) {
     const Tref = tensionRef[nivel];
     const Ttotal = Tref * Math.pow(escala / REF_SCALE, 2);
@@ -69,7 +69,7 @@ function calcularSet(afinacion, escala, nivel) {
     return { escala, total: total.toFixed(1), cuerdas: resultado };
 }
 
-// --- Render tabla editable ---
+// Editable table rendering
 function renderTabla(afinacion, escala, nivel) {
     const tbody = document.getElementById("string-rows");
     tbody.innerHTML = "";
@@ -123,7 +123,7 @@ function renderTabla(afinacion, escala, nivel) {
     activarRecalculo(escala);
 }
 
-// --- Recalcular tensiones al cambiar nota o calibre ---
+// Recalculate tension on note or gauge change
 function activarRecalculo(escala) {
     const filas = document.querySelectorAll("#string-rows tr");
     filas.forEach((fila) => {
@@ -144,7 +144,7 @@ function activarRecalculo(escala) {
     });
 }
 
-// --- Actualizar tensión total ---
+// Total tension update
 function actualizarTensionTotal() {
     const tensiones = document.querySelectorAll("[data-tension]");
     const total = Array.from(tensiones).reduce(
@@ -154,7 +154,7 @@ function actualizarTensionTotal() {
     document.getElementById("total-tension").textContent = total.toFixed(1);
 }
 
-// --- Inicialización ---
+// Initialization
 document.addEventListener("DOMContentLoaded", () => {
     const escalaInput = document.getElementById("scale");
     const tensionSel = document.getElementById("tension");
@@ -168,14 +168,14 @@ document.addEventListener("DOMContentLoaded", () => {
         Open_D: ["D4", "A3", "F#3", "D3", "A2", "D2"],
     };
 
-    // inicial render
+    // Initial render
     renderTabla(
         afinaciones.E_standard,
         parseFloat(escalaInput.value),
         tensionSel.value,
     );
 
-    // cambiar preset
+    // Change preset
     presetSel.addEventListener("change", () => {
         renderTabla(
             afinaciones[presetSel.value],
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     });
 
-    // recalcular set completo
+    // Recalculate full set
     btn.addEventListener("click", () => {
         renderTabla(
             afinaciones[presetSel.value],
@@ -229,7 +229,7 @@ function closeModal() {
     }
 }
 
-// Cargar parámetros de URL y estado previo
+// Load URL parameters and previous state
 document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
     const action = urlParams.get("action");
@@ -274,15 +274,14 @@ function restoreCalculatorState() {
     const tbody = document.getElementById("string-rows");
     tbody.innerHTML = "";
 
-    // Necesitamos recrear la tabla con los valores guardados
-    // Esto es un poco redundante con renderTabla pero permite restaurar cambios manuales
+    // Recreate table with saved values
     renderTabla(
         state.rows.map((r) => r.nota),
         parseFloat(state.scale),
         state.tension,
     );
 
-    // Ajustar calibres manuales si los hay
+    // Manual gauge adjustments
     const rows = document.querySelectorAll("#string-rows tr");
     state.rows.forEach((r, i) => {
         if (rows[i]) {
@@ -295,8 +294,8 @@ function restoreCalculatorState() {
     localStorage.removeItem("calculator_state");
 }
 
-// --- Guardar afinación (hidden inputs) ---
-// Ajuste: ahora el select del form tiene id="tuning-material" (ya no usamos id="material")
+// Save tuning (hidden inputs)
+// Note: form select now uses id="tuning-material"
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("save-tuning-form");
     if (!form) return;
@@ -322,7 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// --- Modal "Añadir set al carrito" ---
+// "Add set to cart" modal
 document.addEventListener("DOMContentLoaded", () => {
     const openBtn = document.getElementById("add-to-cart-btn");
     const modal = document.getElementById("add-to-cart-modal");

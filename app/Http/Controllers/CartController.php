@@ -64,7 +64,7 @@ class CartController extends Controller
             'scale'          => 'nullable|numeric',
         ]);
 
-        // Parseo arrays
+        // Array parsing
         $notes = array_map('trim', explode(',', $validated['notes']));
         $gauges = array_map('trim', explode(',', $validated['gauges']));
         $tensions = array_map('trim', explode(',', $validated['tensions']));
@@ -73,7 +73,7 @@ class CartController extends Controller
             return back()->with('error', 'Datos del set incompletos (notas/calibres/tensiones no cuadran).');
         }
 
-        // Validar que la marca existe con stock
+        // Validate brand existence and stock
         $brandHasStock = Product::query()
             ->where('brand', $validated['manufacturer'])
             ->where('stock', '>', 0)

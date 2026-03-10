@@ -2,7 +2,7 @@
 
 @section('content')
 <style>
-    /* Texturas del Amplificador */
+    /* Amplifier Textures */
     .amp-cabinet {
         background-color: #1a1a1a;
         background-image: radial-gradient(#2a2a2a 1px, transparent 1px);
@@ -40,7 +40,7 @@
         border-top: 4px solid #000;
     }
 
-    /* Controles estilo Knob */
+    /* Knob Controls */
     .knob-container {
         display: flex;
         flex-direction: column;
@@ -84,7 +84,7 @@
         font-size: 0.7rem;
     }
 
-    /* Botón Footswitch */
+    /* Footswitch Button */
     .footswitch-btn {
         width: 80px;
         height: 80px;
@@ -111,7 +111,7 @@
         border: 2px solid #6b7280;
     }
 
-    /* Display Digital */
+    /* Digital Display */
     .digital-display {
         background-color: #061006;
         border: 3px solid #1a1a1a;
@@ -144,13 +144,13 @@
     </script>
 
     <div class="amp-cabinet rounded-xl p-4 sm:p-8">
-        <!-- Esquineras -->
+        <!-- Corner Protectors -->
         <div class="corner-metal corner-tl"></div>
         <div class="corner-metal corner-tr"></div>
         <div class="corner-metal corner-bl"></div>
         <div class="corner-metal corner-br"></div>
 
-        <!-- Panel Superior (Logo y Luz) -->
+        <!-- Upper Panel (Logo and Light) -->
         <div class="amp-panel rounded-t-lg p-6 flex flex-col items-center border-b-4 border-gray-400">
             <div class="flex justify-between w-full items-start">
                 <div class="flex-1"></div>
@@ -164,7 +164,7 @@
             </div>
         </div>
 
-        <!-- Panel de Controles -->
+        <!-- Controls Panel -->
         <div class="amp-panel p-8 grid grid-cols-2 md:grid-cols-4 gap-8 items-end">
             <div class="knob-container">
                 <span class="knob-label">Tuning</span>
@@ -178,7 +178,7 @@
 
             <div class="knob-container">
                 <span class="knob-label text-indigo-900 mb-2">Scale Control</span>
-                <!-- Visor Óvalo Fluido (Sin líneas rectas) -->
+                <!-- Fluid Oval Display -->
                 <div class="bg-black rounded-[100%_/_100%] border-2 border-gray-600 shadow-md flex flex-col items-center justify-center w-44 h-16 p-2 relative">
                     <div class="flex items-center justify-around w-full px-2">
                         <button type="button" onclick="const s = document.getElementById('scale'); s.stepDown(); s.dispatchEvent(new Event('change'))" 
@@ -212,7 +212,7 @@
             </div>
         </div>
 
-        <!-- Área de Acción (Footswitch) -->
+        <!-- Action Area (Footswitch) -->
         <div class="amp-panel p-8 flex justify-center items-center gap-12 bg-opacity-90">
             <div class="flex flex-col items-center gap-2">
                 <span class="knob-label text-indigo-900">Calculate</span>
@@ -228,7 +228,7 @@
             </div>
         </div>
 
-        <!-- Rejilla de Resultados -->
+        <!-- Results Grid -->
         <div class="amp-grill rounded-b-lg p-6 min-h-[300px]">
             <h3 class="text-white text-center font-mono text-sm uppercase tracking-widest mb-6 opacity-60">Results Grid</h3>
             
@@ -243,12 +243,12 @@
                         </tr>
                     </thead>
                     <tbody id="string-rows">
-                        <!-- Filas generadas por JS -->
+                        <!-- JS generated rows -->
                     </tbody>
                 </table>
             </div>
 
-            <!-- Botones de Acción Secundarios -->
+            <!-- Secondary Action Buttons -->
             <div class="mt-8 flex flex-wrap justify-center gap-4">
                 <button type="button" id="save-tuning-btn" class="px-4 py-2 bg-gray-800 text-gray-400 border border-gray-700 rounded text-xs uppercase hover:bg-gray-700 transition">
                     Save Config
@@ -260,7 +260,7 @@
         </div>
     </div>
 
-    <!-- Paneles Ocultos (Estilo Retro) -->
+    <!-- Hidden Panels -->
     <div id="save-tuning-panel" class="hidden mt-6 amp-cabinet p-6 rounded-lg">
         <h3 class="text-xl font-bold text-gray-300 mb-4 font-mono uppercase">Save Preset</h3>
         <form id="save-tuning-form" method="POST" action="{{ route('tunings.store') }}" class="space-y-4">
@@ -284,7 +284,7 @@
         </form>
     </div>
 
-    {{-- Modal Añadir set al carrito (Adaptado) --}}
+    {{-- Add set to cart modal --}}
     <div id="add-to-cart-modal" class="fixed inset-0 hidden items-center justify-center bg-black/80 z-[100] p-4">
         <div class="amp-cabinet w-full max-w-lg rounded-lg p-6">
             <h3 class="text-xl font-bold text-gray-300 mb-6 font-mono uppercase border-b border-gray-800 pb-2">Checkout Custom Set</h3>

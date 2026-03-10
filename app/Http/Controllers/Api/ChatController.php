@@ -34,7 +34,7 @@ class ChatController extends Controller
             $data = $response->json();
             $text = data_get($data, 'candidates.0.content.parts.0.text');
 
-            // Si no hay texto, muéstrame el error real de Google para diagnosticar
+            // Return Google error for diagnostics if no text is present
             if (!$text) {
                 return response()->json([
                     'reply' => 'Error de la IA: ' . ($data['error']['message'] ?? 'Respuesta vacía (posible filtro de seguridad).')
@@ -51,7 +51,7 @@ class ChatController extends Controller
 
     private function getSystemPrompt($context = null)
     {
-        // Extraer datos del contexto o usar valores por defecto
+        // Extract context data or use defaults
         $scaleLength = $context['scale_length'] ?? 'no especificada';
         $tuningName = $context['tuning_name'] ?? 'no especificada';
         $totalTension = $context['total_tension'] ?? 'no calculada';

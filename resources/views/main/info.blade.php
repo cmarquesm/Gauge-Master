@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto space-y-12">
-    <!-- Herramientas del Músico -->
+    <!-- Tools Section -->
     <section class="space-y-8 bg-white rounded-xl p-8 border border-gray-100 shadow-sm">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Afinador Cromático -->
@@ -79,7 +79,7 @@
         </div>
     </section>
 
-    <!-- Sección Principal -->
+    <!-- Main Section -->
     <section class="text-center pt-8">
         <div class="flex justify-center mb-6">
             <img src="{{ asset('images/LOGO editar.png') }}" alt="Gauge Master Logo" class="h-20 w-auto drop-shadow-sm opacity-80">
@@ -91,7 +91,7 @@
         </p>
     </section>
 
-    <!-- Sección sobre la Importancia del Calibre -->
+    <!-- Gauge Importance Section -->
     <section class="bg-gray-50 rounded-lg p-8 shadow-sm">
         <h3 class="text-2xl font-semibold mb-6 text-gray-800">La Importancia de Elegir el Calibre Correcto</h3>
         
@@ -151,7 +151,7 @@
 
 
     <script>
-        // --- LOGICA AFINADOR ---
+        // TUNER LOGIC
         let audioCtx;
         let analyser;
         let microphone;
@@ -171,7 +171,7 @@
             tunerStart.textContent = "Conectando...";
             
             try {
-                // Polyfill para navegadores antiguos
+                // Polyfill for older browsers
                 if (navigator.mediaDevices === undefined) {
                     navigator.mediaDevices = {};
                 }
@@ -233,11 +233,11 @@
                 tunerNote.textContent = noteInfo.note;
                 tunerCents.textContent = `${noteInfo.cents > 0 ? '+' : ''}${Math.round(noteInfo.cents)} cents`;
                 
-                // Animación de aguja (limitar a +/- 50 cents)
+                // Needle animation (limited to +/- 50 cents)
                 const rot = Math.max(-50, Math.min(50, noteInfo.cents));
                 tunerNeedle.style.transform = `rotate(${rot}deg)`;
                 
-                // Color según precisión
+                // Precision color coding
                 tunerNote.style.color = Math.abs(noteInfo.cents) < 5 ? '#10b981' : '#1f2937';
             }
             requestAnimationFrame(updateTuner);
@@ -283,7 +283,7 @@
 
         tunerStart.addEventListener('click', startTuning);
 
-        // --- LOGICA REPRODUCTOR DE NOTAS ---
+        // NOTE PLAYER LOGIC
         function playNote(freq) {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();

@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::paginate(10); // listado con paginación
+        $products = Product::paginate(10); // Paginated list
         return view('admin.products.index', compact('products'));
     }
 
@@ -28,7 +28,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price'       => 'required|numeric|min:0',
             'stock'       => 'required|integer|min:0',
-            'image'       => 'nullable|string|max:255', // si es path a imagen
+            'image'       => 'nullable|string|max:255', // Image path
         ]);
 
         Product::create($request->all());

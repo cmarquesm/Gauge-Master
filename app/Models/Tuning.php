@@ -9,7 +9,7 @@ class Tuning extends Model
 {
     use HasFactory;
 
-    // Los atributos que se pueden asignar en masa
+    // Mass assignable attributes
     protected $fillable = [
         'user_id',
         'name',
@@ -22,7 +22,7 @@ class Tuning extends Model
     ];
 
 
-    // Relación: una afinación pertenece a un usuario
+    // Relationship: tuning belongs to a user
     public function user()
     {
         return $this->belongsTo(User::class);

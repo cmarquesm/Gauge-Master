@@ -13,7 +13,7 @@
             this.message = '';
             this.isLoading = true;
 
-            // Capturar contexto de la calculadora si está disponible
+            // Capture calculator context if available
             const context = this.captureCalculatorContext();
 
             try {
@@ -47,20 +47,20 @@
         },
         formatMessage(text) {
             if (!text) return '';
-            // Reemplazar **texto** por <b>texto</b>
+            // Replace markdown bold with HTML bold
             let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            // Reemplazar saltos de línea por <br>
+            // Replace newlines with <br>
             formatted = formatted.replace(/\n/g, '<br>');
             return formatted;
         },
         captureCalculatorContext() {
-            // Intentar capturar valores de la calculadora
+            // Capture calculator values
             const scaleInput = document.getElementById('scale');
             const presetTuning = document.getElementById('preset-tuning');
             const totalTensionEl = document.getElementById('total-tension');
             const gaugeInputs = document.querySelectorAll('.calibre-input');
             
-            // Si no hay calculadora en la página, retornar null
+            // Return null if no calculator is present
             if (!scaleInput || !presetTuning || !totalTensionEl) {
                 return null;
             }
@@ -68,7 +68,7 @@
             // Capturar calibres actuales
             const gauges = Array.from(gaugeInputs).map(input => input.value).join(', ');
 
-            // Obtener nombre legible de la afinación
+            // Get readable tuning name
             const tuningMap = {
                 'E_standard': 'E estándar',
                 'Drop_D': 'Drop D',

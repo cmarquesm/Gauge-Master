@@ -59,7 +59,7 @@
         @endif
     </div>
 
-    {{-- Modal Añadir set al carrito --}}
+    {{-- Add set to cart modal --}}
     <div id="add-to-cart-modal" class="fixed inset-0 hidden items-center justify-center z-50 bg-black/50 p-4">
         <div class="bg-white w-full max-w-lg rounded-lg shadow-xl p-6 relative">
             <h3 class="text-xl font-semibold mb-4">Añadir set al carrito</h3>
@@ -100,7 +100,7 @@
                 <input type="hidden" name="gauges" id="cart-gauges">
                 <input type="hidden" name="tensions" id="cart-tensions">
                 <input type="hidden" name="total_tension" id="cart-total">
-                {{-- scale no está en Tuning, así que lo enviamos null o vacío --}}
+                {{-- Scale is not in Tuning model, sending null or empty --}}
                 <input type="hidden" name="scale" id="cart-scale" value=""> 
             </form>
         </div>
@@ -112,7 +112,7 @@
             const cancelBtn = document.getElementById('add-to-cart-cancel');
             const btns = document.querySelectorAll('.open-buy-modal-btn');
 
-            // Inputs del modal
+            // Modal inputs
             const inputNotes = document.getElementById('cart-notes');
             const inputGauges = document.getElementById('cart-gauges');
             const inputTensions = document.getElementById('cart-tensions');
@@ -124,22 +124,22 @@
                 btn.addEventListener('click', () => {
                     const data = JSON.parse(btn.getAttribute('data-tuning'));
                     
-                    // Rellenar ocultos
+                    // Populate hidden inputs
                     inputNotes.value = data.notes;
                     inputGauges.value = data.gauges;
                     inputTensions.value = data.tensions;
                     inputTotal.value = data.total_tension;
 
-                    // Mostrar info visual
+                    // Show visual info
                     tuningNameDisplay.textContent = `Afinación: ${data.name}`;
 
-                    // Preseleccionar material si existe en el objeto tuning
+                    // Preselect material if it exists in tuning object
                     if (data.material) {
-                         // Intentar matchear value
+                         // Attempt to match value
                          selectMaterial.value = data.material;
                     }
 
-                    // Mostrar modal
+                    // Show modal
                     modal.classList.remove('hidden');
                     modal.classList.add('flex');
                 });
@@ -150,7 +150,7 @@
                 modal.classList.remove('flex');
             });
 
-            // Cerrar al hacer click fuera
+            // Close on outside click
             modal.addEventListener('click', (e) => {
                 if(e.target === modal) {
                     modal.classList.add('hidden');

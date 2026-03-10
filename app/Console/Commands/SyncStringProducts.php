@@ -46,7 +46,7 @@ class SyncStringProducts extends Command
                 'description' => $data['description'], // material
             ];
 
-            // Asignar imagen según fabricante
+            // Assign image based on manufacturer
             $brandLower = strtolower(str_replace(' ', '', $data['brand']));
             $imageMap = [
                 'daddario' => 'images/daddario.jpg',
@@ -54,13 +54,13 @@ class SyncStringProducts extends Command
             ];
             $assignedImage = $imageMap[$brandLower] ?? null;
 
-            // Catálogo: sí se actualiza siempre
+            // Catalog: always updated
             $catalogValues = [
                 'price' => (float) $data['price'],
                 'image' => $assignedImage,
             ];
 
-            // Stock: solo se aplica cuando se crea por primera vez
+            // Stock: applied only on creation
             $initialStock = (int) $data['stock'];
 
             $product = Product::where($key)->first();

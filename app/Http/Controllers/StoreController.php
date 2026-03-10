@@ -14,13 +14,13 @@ class StoreController extends Controller
             ->where('description', '!=', 'set personalizado creado en la calculadora')
             ->where('gauge', '!=', 'custom');
 
-        // Filtros
+        // Filters
         if ($request->filled('brand')) {
             $query->where('brand', $request->string('brand'));
         }
 
         if ($request->filled('material')) {
-            // En tu modelo el material está en description
+            // Material is stored in description
             $query->where('description', $request->string('material'));
         }
 
@@ -28,7 +28,7 @@ class StoreController extends Controller
             $query->where('gauge', $request->string('gauge'));
         }
 
-        // Orden
+        // Sorting
         $sort = $request->string('sort', 'gauge')->toString();
         if ($sort === 'price_asc') {
             $query->orderBy('price', 'asc');
@@ -40,7 +40,7 @@ class StoreController extends Controller
 
         $products = $query->paginate(24)->withQueryString();
 
-        // Opciones para filtros (desde BD) - Excluir valores CUSTOM y sets personalizados
+        // Filter options from database (excluding CUSTOM values)
         $brands = Product::query()
             ->select('brand')
             ->distinct()

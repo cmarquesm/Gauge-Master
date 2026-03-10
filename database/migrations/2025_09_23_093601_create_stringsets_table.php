@@ -21,7 +21,7 @@ return new class extends Migration
         $table->decimal('string_4_gauge', 5, 2)->nullable();
         $table->decimal('string_5_gauge', 5, 2)->nullable();
         $table->decimal('string_6_gauge', 5, 2)->nullable();
-        $table->integer('scale_length_mm'); // en milímetros
+        $table->integer('scale_length_mm'); // in millimeters
         $table->foreignId('tuning_id')->nullable()->constrained('tunings')->onDelete('set null');
         $table->timestamps();
     });
