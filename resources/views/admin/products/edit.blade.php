@@ -57,7 +57,7 @@
     </div>
 
     <div class="flex justify-end">
-      <a href="{{ route('admin.products.index') }}" class="px-4 py-2 bg-gray-300 text-sm rounded mr-2">Cancelar</a>
+      <a href="{{ route('admin.dashboard') }}" class="px-4 py-2 bg-gray-300 text-sm rounded mr-2">Cancelar</a>
       <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
         Actualizar producto
       </button>

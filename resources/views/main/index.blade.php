@@ -1,6 +1,14 @@
 @extends('layouts.main')
 
 @section('content')
+@php
+    $brands = \App\Models\Product::query()
+        ->where('stock', '>', 0)
+        ->select('brand')
+        ->distinct()
+        ->orderBy('brand')
+        ->pluck('brand');
+@endphp
 <style>
     /* Amplifier Textures */
     .amp-cabinet {
@@ -269,6 +277,7 @@
             </div>
 
             <textarea name="description" id="tuning-description" rows="2" class="w-full bg-black text-green-400 border border-gray-800 p-2 rounded font-mono" placeholder="Descripción"></textarea>
+            </div>
 
             <input type="hidden" name="notes" id="tuning-notes">
             <input type="hidden" name="gauges" id="tuning-gauges">
@@ -294,8 +303,9 @@
                         <label class="text-xs uppercase text-gray-500 font-mono mb-1">Fabricante</label>
                         <select name="manufacturer" id="cart-manufacturer-modal" class="bg-black text-green-400 border border-gray-800 p-2 rounded font-mono" required>
                             <option value="">Seleccionar...</option>
-                            <option value="Daddario">Daddario</option>
-                            <option value="Ernie Ball">Ernie Ball</option>
+                            @foreach($brands as $brand)
+                                <option value="{{ $brand }}">{{ $brand }}</option>
+                            @endforeach
                         </select>
                     </div>
 

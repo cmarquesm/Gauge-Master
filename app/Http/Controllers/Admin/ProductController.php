@@ -55,7 +55,7 @@ class ProductController extends Controller
 
         $product->update($request->all());
 
-        return redirect()->route('admin.products.index')->with('success', 'Producto actualizado correctamente.');
+        return redirect()->route('admin.dashboard')->with('success', 'Producto actualizado correctamente.');
     }
 
     public function destroy(Product $product)
